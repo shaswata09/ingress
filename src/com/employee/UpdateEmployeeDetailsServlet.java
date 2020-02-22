@@ -30,6 +30,7 @@ public class UpdateEmployeeDetailsServlet extends HttpServlet {
 			String employeeLocation = request.getParameter("employeeLocation");
 			String employeeRole = request.getParameter("employeeRole");
 			String employeeSOW = request.getParameter("employeeSOW");
+			String employeeEditCategory = request.getParameter("employeeEditCategory");
 			
 			System.out.println(employeeName);
 			System.out.println(employeeKITSID);
@@ -40,7 +41,7 @@ public class UpdateEmployeeDetailsServlet extends HttpServlet {
 			System.out.println(employeeLocation);
 			System.out.println(employeeRole);
 			System.out.println(employeeSOW);
-			
+			System.out.println(employeeEditCategory);
 			//send code to insert function.
 			
 			response.sendRedirect("dashboard.jsp");

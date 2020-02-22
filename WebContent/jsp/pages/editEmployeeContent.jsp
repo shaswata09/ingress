@@ -111,13 +111,13 @@
               <div class="form-group row">
               <div class="col-sm-5 mb-3 mb-sm-0 row">
               	<div class="col-sm-5 mb-2 mb-sm-0">
-              		<button type="submit" class="btn btn-block btn-success" disabled>
+              		<button type="submit" class="btn btn-block btn-success" name="employeeEditCategory" value="resetPassword" disabled>
 					    Issue Login <i class="fas fa-thumbs-up"></i> 
 					</button> 
               	</div>      
               	<div class="col-sm-1 mb-0 mb-sm-0"></div>   	
               	<div class="col-sm-6 mb-3 mb-sm-0">
-              		<button type="submit" class="btn btn-block btn-secondary">
+              		<button type="submit" class="btn btn-block btn-secondary" name="employeeEditCategory" value="resetPassword">
 					    Reset Password <i class="fas fa-thumbs-up"></i> 
 					</button> 
               	</div>
@@ -127,12 +127,12 @@
               	<div class="col-sm-4 mb-2 mb-sm-0">
               		<div class="form-group row" align="right">
               			<div class="col-sm-6 mb-3 mb-sm-0">
-	              			<button type="submit" class="btn btn-block btn-warning">
+	              			<button type="submit" class="btn btn-block btn-warning" name="employeeEditCategory" value="changeDetails">
 							    <i class="fas fa-user-check"></i> Save
 							</button>               				
               			</div>
               			<div class="col-sm-6 mb-3 mb-sm-0">
-              				<a class="btn btn-block btn-info" href="SwitchPages?pageName=dashboard">
+              				<a class="btn btn-block btn-info" href="SwitchPages?pageName=employeeDetails">
 							    <i class="fas fa-times"></i> Discard
 							</a>   
               			</div>
