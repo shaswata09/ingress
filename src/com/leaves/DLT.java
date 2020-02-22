@@ -323,7 +323,7 @@ public class DLT {
             return finalList;// returns null if finds nothing-- so have to handle it
     	}
     	catch(Exception exception) {
-    		exception.printStackTrace();
+    		System.out.println("File Not found.");
     		return null;
     	}        
     }
