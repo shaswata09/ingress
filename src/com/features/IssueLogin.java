@@ -47,7 +47,7 @@ public class IssueLogin {
             }
             // For each row, iterate through all the columns
             final Cell cell = row.getCell(1);
-           // System.out.println(cell.toString());
+           
             int empLookUpId;
             final CellType type = cell.getCellType();
             if(type == CellType.STRING) {
@@ -70,8 +70,7 @@ public class IssueLogin {
             }
             final Cell cell = row.getCell(0);
             final CellType type = cell.getCellType();
-            if(cell == null) {
-                System.out.println("cell is null");
+            if(null == cell) {
                 continue;
             }
             final int cellEmpId;
@@ -89,9 +88,6 @@ public class IssueLogin {
     }
 
     public void addDefault(final int empId) throws IOException { 
-
-
-            System.out.println("im in addDefault");
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);
             this.sheet = this.workbook.getSheetAt(0);

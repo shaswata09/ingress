@@ -19,6 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.PMOProperties.ExcelFileDetails;
+import com.features.QuarterServiceHelper;
 
  
 
@@ -33,7 +34,6 @@ public class TempTable {
     public void insert(final List<String> finalList) throws IOException {
 
         try {
-            System.out.println("im in insert");
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);
             this.sheet = this.workbook.getSheetAt(0);
@@ -42,7 +42,6 @@ public class TempTable {
             this.dateCellStyle.setDataFormat(this.createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
         } catch(final IOException io) { // if the file is not present then it will create the file
                                         // first and call again
-            System.out.println("I am here");
             // Blank workbook
             this.workbook = new XSSFWorkbook();
 
@@ -128,8 +127,8 @@ public class TempTable {
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);            
             this.sheet = this.workbook.getSheetAt(0);
-        } catch(final Exception e) {
-            System.out.println(e);
+        } catch(final Exception exception) {
+        	exception.printStackTrace();
         }
 		
         
@@ -171,7 +170,7 @@ public class TempTable {
     }
     
     public void deleteRow(final int empId, final String startDate, final String endDate) {
-        final String fullPath = "C:\\Users\\1604357\\Desktop\\Leave_Management\\PMO Application\\PMO Application\\TempTable.xlsx";
+        final String fullPath = ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.TEMP_TABLE;
         try {
             final FileInputStream file = new FileInputStream(new File(fullPath));
 
@@ -255,8 +254,8 @@ public class TempTable {
 		if(approval)
 		{
 			list.set(10,"approved");
-			try {
-				new DLT().addToTable(list);
+			try {				
+				new DLT(QuarterServiceHelper.findQuarterByDate(startDate)).addToTable(list);
 				this.deleteRow(empId, startDate, endDate);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -289,8 +288,7 @@ public class TempTable {
                 continue;
             }
             final Cell cell = row.getCell(1);
-            if(cell == null) {
-                System.out.println("cell is null");
+            if(null == cell) {
                 continue;
             }
 

@@ -29,7 +29,7 @@ public class RejectedListTable {
 		try {
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);
-            System.out.println(this.workbook.getActiveSheetIndex());
+//            System.out.println(this.workbook.getActiveSheetIndex());
             this.sheet = this.workbook.getSheetAt(0);
         } catch(final Exception e) {
         	// Blank workbook

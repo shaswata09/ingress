@@ -14,7 +14,7 @@ import com.employee.Employee;
 import com.employee.EmployeeDetailsList;
 import com.enums.AdminPages;
 import com.enums.EmployeePages;
-import com.features.GenerateQuarterList;
+import com.features.QuarterServiceHelper;
 import com.leaves.DLT;
 import com.leaves.TempTable;
 
@@ -31,9 +31,8 @@ public class SwitchPagesServlet extends HttpServlet {
 			if(pageName.equalsIgnoreCase("error"))
 				response.sendRedirect("error.jsp");
 			
-			if(session.getAttribute("user") == null) {		//if user not defined, redirect to login
-				session.invalidate();
-				response.sendRedirect("login.jsp");
+			if(null == session.getAttribute("user")) {		//if user not defined, redirect to login
+				sessionInvalidate(response, session);
 			}		
 			else if(((Employee)session.getAttribute("user")).getEmployeeAccessRight().equals("0")) {	//logged in as user 
 				if (EmployeePages.contains(pageName)) {
@@ -50,9 +49,9 @@ public class SwitchPagesServlet extends HttpServlet {
 						session.setAttribute("pageName",pageName);
 					
 					if((session.getAttribute("pageName").toString()).equalsIgnoreCase("selfLeaveStatus")) {					
-						session.setAttribute("filteredQuarterList", GenerateQuarterList.filteredQuarterList());
-						session.setAttribute("quarterlyLeaveList", new DLT().showTable(GenerateQuarterList.getCurrentQuarter()));
-						session.setAttribute("currentQuarter", GenerateQuarterList.getCurrentQuarter());
+						session.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
+						session.setAttribute("quarterlyLeaveList", new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable());
+						session.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());
 					}
 					else {
 						session.removeAttribute("filteredQuarterList");
@@ -63,8 +62,7 @@ public class SwitchPagesServlet extends HttpServlet {
 					response.sendRedirect("dashboard.jsp");
 			    }
 				else {
-					session.invalidate();
-					response.sendRedirect("login.jsp");
+					sessionInvalidate(response, session);
 				}
 			}
 			else if(((Employee)session.getAttribute("user")).getEmployeeAccessRight().equals("1")) {	//logged in as admin
@@ -82,20 +80,20 @@ public class SwitchPagesServlet extends HttpServlet {
 					} else if(pageName.equals("approveLeave")) {		//creating and removing Pending leave list as required						
 						request.setAttribute("pendingLeaveList", new TempTable().showTable());
 					} else if(pageName.equals("quarterlyLeaveReport")) {
-						if(request.getAttribute("changedQuarterFlag")==null) {
-							request.setAttribute("filteredQuarterList", GenerateQuarterList.filteredQuarterList());
-							request.setAttribute("quarterlyLeaveList",new DLT().showTable(GenerateQuarterList.getCurrentQuarter()));
-							request.setAttribute("currentQuarter", GenerateQuarterList.getCurrentQuarter());	
+						if(null == request.getAttribute("changedQuarterFlag")) {
+							request.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
+							request.setAttribute("quarterlyLeaveList",new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable());
+							request.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());	
 						}
 						else {
 							request.removeAttribute("changedQuarterFlag");
 						}
 																
 					} else if(pageName.equals("selfLeaveStatus")) {
-						if(request.getAttribute("changedQuarterFlag")==null) {
-						request.setAttribute("filteredQuarterList", GenerateQuarterList.filteredQuarterList());
-						request.setAttribute("quarterlyLeaveList",new DLT().showTable(GenerateQuarterList.getCurrentQuarter()));
-						request.setAttribute("currentQuarter", GenerateQuarterList.getCurrentQuarter());
+						if(null == request.getAttribute("changedQuarterFlag")) {
+						request.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
+						request.setAttribute("quarterlyLeaveList",new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable());
+						request.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());
 						}
 						else {
 							request.removeAttribute("changedQuarterFlag");
@@ -107,21 +105,22 @@ public class SwitchPagesServlet extends HttpServlet {
 					rd.forward(request, response);			
 			    }
 				else {
-					session.invalidate();
-					response.sendRedirect("login.jsp");
+					sessionInvalidate(response, session);
 				}
 			}
 			else {
-				session.invalidate();
-				response.sendRedirect("login.jsp");
+				sessionInvalidate(response, session);
 			}
 		}
 		catch(Exception exception) {
-			if(session != null)
-				session.invalidate();
+			session.invalidate();
 			response.sendRedirect("error.jsp");
-			System.out.println("Exception occurred!!!");
 			exception.printStackTrace();
 		}		
 	}			// EmployeeEdit change...
+
+	private void sessionInvalidate(HttpServletResponse response, HttpSession session) throws IOException {
+		session.invalidate();
+		response.sendRedirect("login.jsp");
+	}
 }

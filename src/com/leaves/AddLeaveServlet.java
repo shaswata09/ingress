@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import com.PMOProperties.*;
 import com.employee.Employee;
+import com.features.QuarterServiceHelper;
 
 @WebServlet("/addLeave")
 public class AddLeaveServlet extends HttpServlet {
@@ -41,9 +42,28 @@ public class AddLeaveServlet extends HttpServlet {
 		}
 		
 		if(startDate.compareTo(endDate)<=0) {
-			DLT dlt = new DLT(); 
 			try { 
-				dlt.addLeaveIntoTables(userID, leaveType, startDateString, endDateString); 
+				if(QuarterServiceHelper.findQuarterByDate(startDateString).equals(QuarterServiceHelper.findQuarterByDate(endDateString))) {					
+					new DLT(QuarterServiceHelper.findQuarterByDate(startDateString)).addLeaveIntoTables(userID, leaveType, 
+							startDateString, endDateString); 
+				}
+				else {
+					String tempQuarter = null;				
+					new DLT(QuarterServiceHelper.findQuarterByDate(startDateString)).addLeaveIntoTables(userID, leaveType,
+							startDateString, QuarterServiceHelper.findLastDateOfQuarter(QuarterServiceHelper.findQuarterByDate(startDateString)));
+					
+					tempQuarter = QuarterServiceHelper.findNextQuarter(QuarterServiceHelper.findQuarterByDate(startDateString));
+					for(int i=1; i<(QuarterServiceHelper.compareQuarter(QuarterServiceHelper.findQuarterByDate(endDateString), 
+							QuarterServiceHelper.findQuarterByDate(startDateString))); i++) {						
+						new DLT(QuarterServiceHelper.findQuarterByDate(startDateString)).addLeaveIntoTables(userID, leaveType,
+								QuarterServiceHelper.findFirstDateOfQuarter(tempQuarter), QuarterServiceHelper.findLastDateOfQuarter(tempQuarter));				
+						tempQuarter = new String(QuarterServiceHelper.findNextQuarter(tempQuarter));
+					}
+					
+					new DLT(QuarterServiceHelper.findQuarterByDate(startDateString)).addLeaveIntoTables(userID, leaveType, 
+							QuarterServiceHelper.findFirstDateOfQuarter(QuarterServiceHelper.findQuarterByDate(endDateString)), endDateString);
+				}		
+				
 				session.setAttribute("pageName", "addLeave");
 				if(((Employee)session.getAttribute("user")).getEmployeeAccessRight().equals("1")) {
 					request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_APPLIED);
@@ -51,7 +71,7 @@ public class AddLeaveServlet extends HttpServlet {
 				else {
 					session.setAttribute("userActionMessageFlag", "true");
 					session.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_APPLIED);
-					if(((Employee)session.getAttribute("user")).getEmployeeAccessRight().equals("0"))
+					if(leaveType.equalsIgnoreCase("planned"))
 						session.setAttribute("userActionMessageSecondary", UserActionMessages.CONTACT_ADMIN_FOR_APPROVAL);
 				}				
 			} catch(ParseException e) {

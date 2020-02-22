@@ -31,15 +31,16 @@ public class DLT {
     XSSFWorkbook workbook;
     XSSFSheet sheet;
     
-//    public DLT() {
-//        try {        	
-//            this.file = new FileInputStream(new File(this.fullPath));
-//            this.workbook = new XSSFWorkbook(this.file);            
-//            this.sheet = this.workbook.getSheetAt(0);
-//        } catch(final Exception e) {
-//            e.printStackTrace();;
-//        }
-//    }
+    public DLT(String quarterName) {
+        try {      
+        	this.fullPath = this.filePath + quarterName + "\\" + this.fileName;
+            this.file = new FileInputStream(new File(this.fullPath));
+            this.workbook = new XSSFWorkbook(this.file);            
+            this.sheet = this.workbook.getSheetAt(0);
+        } catch(final Exception exception) {
+        	System.out.println("File Not found Exception.");
+        }
+    }
 
     public void addLeaveIntoTables(final int empId, final String typeOfLeave, final String start, final String end)
             throws IOException, ParseException {
@@ -270,9 +271,8 @@ public class DLT {
         return weekEnds;
     }   
     
-    public List<DltObject> showTable(String quarterName) throws IOException {			//call to get quarterly leave report
-    	try {
-    		this.fullPath = this.filePath + quarterName + "\\" + this.fileName;
+    public List<DltObject> showTable() throws IOException {			//call to get quarterly leave report
+    	try {    		
             final DltObject obj = new DltObject();
             final List<DltObject> list = new ArrayList<DltObject>();
             final List<List<String>> list2 = returnList();
@@ -302,8 +302,7 @@ public class DLT {
                     continue;
                 }
                 final Cell cell = row.getCell(1);
-                if(cell == null) {
-                    System.out.println("cell is null");
+                if(null == cell) {
                     continue;
                 } 
 
@@ -323,7 +322,7 @@ public class DLT {
             return finalList;// returns null if finds nothing-- so have to handle it
     	}
     	catch(Exception exception) {
-    		System.out.println("File Not found.");
+    		System.out.println("File Not found Exception.");
     		return null;
     	}        
     }

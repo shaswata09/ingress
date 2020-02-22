@@ -31,7 +31,6 @@ public class EmpLookUp {
 
     public EmpLookUp() {
         try {
-            System.out.println("im in cons");
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);
          
@@ -51,8 +50,7 @@ public class EmpLookUp {
                 continue;
             }
             final Cell cell = row.getCell(1);
-            if(cell == null) {
-                System.out.println("cell is null");
+            if(null == cell) {
                 continue;
             }
             final int cellEmpId = (int)cell.getNumericCellValue();

@@ -28,8 +28,8 @@ public class EmployeeDetailsList {
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);            
             this.sheet = this.workbook.getSheetAt(0);
-        } catch(final Exception e) {
-            System.out.println(e);
+        } catch(final Exception exception) {
+        	exception.printStackTrace();
         }
 		
         final List<Employee> empList = new ArrayList<Employee>();
