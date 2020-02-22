@@ -283,7 +283,7 @@ public class DLT {
             return list;
     	}
     	catch (Exception exception) {
-    		exception.printStackTrace();
+    		System.out.println("Null Pointer Exception due to missing file.");
     		return null;
     	}    	
     } 
