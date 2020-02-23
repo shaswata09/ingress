@@ -185,7 +185,7 @@ public class TempTable {
              * block: { final Row temp = sheet.getRow(392); final Cell temp2 = temp.getCell(2);
              * System.out.println(temp2.getStringCellValue()); }
              */
-            int temp2 = number;
+   
             for(int i = 1; i <= number; i++) {
                 // System.out.println("Now in i=== " + i);
                 final Row row = sheet.getRow(i);
@@ -242,6 +242,7 @@ public class TempTable {
             }
             final FileOutputStream fileOut = new FileOutputStream(fullPath);
             workbook.write(fileOut);
+            workbook.close();
             fileOut.close();
         } catch(final Exception e) {
             e.printStackTrace();

@@ -22,7 +22,7 @@ public class Insert {
 
     public void insertEmployee() throws IOException {
     	
-        final Scanner sc = new Scanner(System.in);
+        final Scanner scanner = new Scanner(System.in);
         try {
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);
@@ -55,11 +55,13 @@ public class Insert {
                 System.out.println("Give access level: ");
             }
             final Cell cell = row.createCell(i);
-            cell.setCellValue(sc.next());
+            cell.setCellValue(scanner.next());
         }
         final FileOutputStream out = new FileOutputStream(
                 new File(fullPath));
+        scanner.close();
         this.workbook.write(out);
+        this.workbook.close();
         out.close();
     }
 	
