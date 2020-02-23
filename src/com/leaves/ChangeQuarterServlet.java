@@ -34,6 +34,7 @@ public class ChangeQuarterServlet extends HttpServlet {
 				
 				request.setAttribute("currentQuarter", quarterInfo);
 				request.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
+				
 				request.setAttribute("changedQuarterFlag", true);
 				request.setAttribute("userActionMessagePrimary", UserActionMessages.QUARTER_CHANGED);
 				request.setAttribute("userActionMessageSecondary", UserActionMessages.TO+" "+ quarterInfo);

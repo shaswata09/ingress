@@ -31,6 +31,9 @@
 	  $(document).ready( function () {
 		    $('#dataTable').DataTable();
 		} );
+	  $(document).ready( function () {
+		    $('#pendingLeaveDataTable').DataTable();
+		} );
   </script>
   
   <!-- SearchEmployee Dropdown list -->

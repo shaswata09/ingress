@@ -174,9 +174,6 @@ public class TempTable {
         final String fullPath = this.fullPath;
         try {
             final FileInputStream file = new FileInputStream(new File(fullPath));
-
- 
-
             final XSSFWorkbook workbook = new XSSFWorkbook(file);
             final XSSFSheet sheet = workbook.getSheetAt(0);
             // this.printSheet(sheet);
@@ -277,7 +274,7 @@ public class TempTable {
 		}
 	}
     
-    public List<List<String>> returnList() throws IOException {
+    public List<List<String>> returnList(String employeeID) throws IOException {
         this.file = new FileInputStream(new File(this.fullPath));
         this.workbook = new XSSFWorkbook(this.file);
         this.sheet = this.workbook.getSheetAt(0);
@@ -294,30 +291,55 @@ public class TempTable {
                 continue;
             }
 
-            for(int j = 0; j < 11; j++) {
-                final Cell cell2 = row.getCell(j);
-                final CellType ct = cell2.getCellType();
-                if(ct == CellType.STRING) {
-                    al.add(cell2.getStringCellValue());
-                } else if(ct == CellType.NUMERIC) {
-                    final long temp = (long)cell2.getNumericCellValue();
-                    al.add(Long.toString(temp));
+            if(null == employeeID) {
+            	for(int j = 0; j < 11; j++) {
+                    Cell cell2 = row.getCell(j);
+                    CellType ct = cell2.getCellType();
+                    if(ct == CellType.STRING) {
+                        al.add(cell2.getStringCellValue());
+                    } else if(ct == CellType.NUMERIC) {
+                        final long temp = (long)cell2.getNumericCellValue();
+                        al.add(Long.toString(temp));
+                    }
                 }
+            	finalList.add(al);
             }
-
-            finalList.add(al);
-        }
+            else {            	
+            	if(row.getCell(0).getCellType() == CellType.NUMERIC && 
+            			(Long.toString((long) row.getCell(0).getNumericCellValue()).equalsIgnoreCase(employeeID))) {                		
+            		for(int j = 0; j < 11; j++) {
+                        Cell cell2 = row.getCell(j);
+                        CellType ct = cell2.getCellType();
+                        if(ct == CellType.STRING) {
+                            al.add(cell2.getStringCellValue());
+                        } else if(ct == CellType.NUMERIC) {
+                            long temp = (long)cell2.getNumericCellValue();
+                            al.add(Long.toString(temp));
+                        }
+                    }                		
+            		finalList.add(al);            		
+            	}                	
+            }               
+        }        
         return finalList;// returns null if finds nothing-- so have to handle it
     } 
 
-    public List<TempTableObject> showTable() throws IOException {
+    public List<TempTableObject> showTable(String employeeID) throws IOException {
         final TempTableObject obj = new TempTableObject();
         final List<TempTableObject> list = new ArrayList<TempTableObject>();
-        final List<List<String>> list2 = returnList();
-        for(int i = 1; i < list2.size(); i++) {
-            final List<String> temp = list2.get(i);
-            list.add(obj.returnObject(temp));
+        final List<List<String>> list2 = returnList(employeeID);
+        if(null == employeeID) {
+        	for(int i = 1; i < list2.size(); i++) {
+                final List<String> temp = list2.get(i);
+                list.add(obj.returnObject(temp));
+            }
         }
+        else {
+        	for(int i = 0; i < list2.size(); i++) {
+                final List<String> temp = list2.get(i);
+                list.add(obj.returnObject(temp));
+            }
+        }       
         return list;
     } 
 }
