@@ -271,12 +271,12 @@ public class DLT {
         return weekEnds;
     }   
     
-    public List<DltObject> showTable() throws IOException {			//call to get quarterly leave report
+    public List<DltObject> showTable(String employeeID) throws IOException {			//call to get quarterly leave report
     	try {    		
             final DltObject obj = new DltObject();
-            final List<DltObject> list = new ArrayList<DltObject>();
-            final List<List<String>> list2 = returnList();
-            for(int i = 1; i < list2.size(); i++) {
+            final List<DltObject> list = new ArrayList<DltObject>();            
+            final List<List<String>> list2 = returnList(employeeID);
+            for(int i = 0; i < list2.size(); i++) {
                 final List<String> temp = list2.get(i);
                 list.add(obj.returnObject(temp));
             }
@@ -286,16 +286,16 @@ public class DLT {
     		System.out.println("Null Pointer Exception due to missing file.");
     		return null;
     	}    	
-    } 
+    }     
 
-    private List<List<String>> returnList() throws IOException {
+    private List<List<String>> returnList(String employeeID) throws IOException {
     	try {
     		this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);
             this.sheet = this.workbook.getSheetAt(0);
-            final List<List<String>> finalList = new ArrayList<List<String>>();
-
-            for(int i = 1; i <= this.sheet.getLastRowNum(); i++) {
+            List<List<String>> finalList = new ArrayList<List<String>>();
+            
+        	for(int i = 2; i <= this.sheet.getLastRowNum(); i++) {
                 final List<String> al = new ArrayList<String>();
                 final Row row = this.sheet.getRow(i);
                 if(null == row) {
@@ -305,20 +305,37 @@ public class DLT {
                 if(null == cell) {
                     continue;
                 } 
-
-                for(int j = 0; j < 11; j++) {
-                    final Cell cell2 = row.getCell(j);
-                    final CellType ct = cell2.getCellType();
-                    if(ct == CellType.STRING) {
-                        al.add(cell2.getStringCellValue());
-                    } else if(ct == CellType.NUMERIC) {
-                        final long temp = (long)cell2.getNumericCellValue();
-                        al.add(Long.toString(temp));
+                
+                if(null == employeeID) {
+                	for(int j = 0; j < 11; j++) {
+                        Cell cell2 = row.getCell(j);
+                        CellType ct = cell2.getCellType();
+                        if(ct == CellType.STRING) {
+                            al.add(cell2.getStringCellValue());
+                        } else if(ct == CellType.NUMERIC) {
+                            final long temp = (long)cell2.getNumericCellValue();
+                            al.add(Long.toString(temp));
+                        }
                     }
+                	finalList.add(al);
                 }
-                finalList.add(al);
-
-            }
+                else {
+                	if(row.getCell(0).getCellType() == CellType.NUMERIC && 
+                			(Long.toString((long) row.getCell(0).getNumericCellValue()).equalsIgnoreCase(employeeID))) {                		
+                		for(int j = 0; j < 11; j++) {
+                            Cell cell2 = row.getCell(j);
+                            CellType ct = cell2.getCellType();
+                            if(ct == CellType.STRING) {
+                                al.add(cell2.getStringCellValue());
+                            } else if(ct == CellType.NUMERIC) {
+                                long temp = (long)cell2.getNumericCellValue();
+                                al.add(Long.toString(temp));
+                            }
+                        }                		
+                		finalList.add(al);
+                	}                	
+                }               
+            }           
             return finalList;// returns null if finds nothing-- so have to handle it
     	}
     	catch(Exception exception) {

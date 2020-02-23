@@ -49,9 +49,16 @@ public class SwitchPagesServlet extends HttpServlet {
 						session.setAttribute("pageName",pageName);
 					
 					if((session.getAttribute("pageName").toString()).equalsIgnoreCase("selfLeaveStatus")) {					
-						session.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
-						session.setAttribute("quarterlyLeaveList", new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable());
-						session.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());
+						session.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());						
+						if(null == request.getAttribute("quarterlyLeaveList")) {
+							session.setAttribute("quarterlyLeaveList", new DLT(QuarterServiceHelper.getCurrentQuarter()).
+									showTable(((Employee)session.getAttribute("user")).getEmployeeId()));
+							session.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());
+						}
+						else {
+							session.setAttribute("quarterlyLeaveList", request.getAttribute("quarterlyLeaveList"));
+							session.setAttribute("currentQuarter", request.getAttribute("currentQuarter"));
+						}
 					}
 					else {
 						session.removeAttribute("filteredQuarterList");
@@ -82,7 +89,7 @@ public class SwitchPagesServlet extends HttpServlet {
 					} else if(pageName.equals("quarterlyLeaveReport")) {
 						if(null == request.getAttribute("changedQuarterFlag")) {
 							request.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
-							request.setAttribute("quarterlyLeaveList",new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable());
+							request.setAttribute("quarterlyLeaveList",new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable(null));
 							request.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());	
 						}
 						else {
@@ -92,7 +99,8 @@ public class SwitchPagesServlet extends HttpServlet {
 					} else if(pageName.equals("selfLeaveStatus")) {
 						if(null == request.getAttribute("changedQuarterFlag")) {
 						request.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
-						request.setAttribute("quarterlyLeaveList",new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable());
+						request.setAttribute("quarterlyLeaveList",new DLT(QuarterServiceHelper.getCurrentQuarter()).
+								showTable(((Employee)session.getAttribute("user")).getEmployeeId()));
 						request.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());
 						}
 						else {

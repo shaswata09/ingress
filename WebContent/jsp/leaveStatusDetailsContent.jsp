@@ -55,8 +55,8 @@
               </thead>
               <tfoot>
                 <tr>
-                  <th>Start Date</th>            
-                  <th>End Date</th>
+                  <th>(yyyy-MM-dd)</th>            
+                  <th>(yyyy-MM-dd)</th>
                   <th>Days</th>
                   <th>Type</th>
                   <th>Month</th>
