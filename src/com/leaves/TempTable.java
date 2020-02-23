@@ -49,7 +49,7 @@ public class TempTable {
             this.sheet = this.workbook.createSheet("Temp Table");
             int lastRowNumber = this.sheet.getLastRowNum();
             final FileOutputStream out = new FileOutputStream(
-                    new File(ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.TEMP_TABLE));
+                    new File(this.fullPath));
             final Row row = this.sheet.createRow(++lastRowNumber);
             for(int i = 0; i < 11; i++) {
                 final Cell cell = row.createCell(i);
@@ -115,12 +115,13 @@ public class TempTable {
             }
         }
         final FileOutputStream out = new FileOutputStream(
-                new File(ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.TEMP_TABLE));
+                new File(this.fullPath));
         this.workbook.write(out);
         out.close();
 
     }
-    List<String> getDetails(int empId,String startDate,String endDate)
+    
+    public List<String> getDetails(int empId,String startDate,String endDate)
     {
     	List<String> list= new ArrayList<String>();
     	try {
@@ -140,7 +141,7 @@ public class TempTable {
                 countRow++;
                 continue;
             }
-            if(row == null) {
+            if(null == row) {
                 continue;
             }
         
@@ -170,7 +171,7 @@ public class TempTable {
     }
     
     public void deleteRow(final int empId, final String startDate, final String endDate) {
-        final String fullPath = ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.TEMP_TABLE;
+        final String fullPath = this.fullPath;
         try {
             final FileInputStream file = new FileInputStream(new File(fullPath));
 
@@ -189,14 +190,14 @@ public class TempTable {
             for(int i = 1; i <= number; i++) {
                 // System.out.println("Now in i=== " + i);
                 final Row row = sheet.getRow(i);
-                if(row == null) {
+                if(null == row) {
                     // System.out.println("row is null and the number is: " + i);
                     continue;
                 }
                 final Cell temp0 = row.getCell(0);
                 final Cell temp3 = row.getCell(3);
                 final Cell temp4 = row.getCell(4);
-                if(temp0 == null || temp3 == null || temp4 == null) {
+                if(null == temp0 || null == temp3 || null == temp4) {
                     // System.out.println("temp is null: " + i);
                 }
                 final CellType type0 = temp0.getCellType();
@@ -285,7 +286,7 @@ public class TempTable {
         for(int i = 1; i <= this.sheet.getLastRowNum(); i++) {
             final List<String> al = new ArrayList<String>();
             final Row row = this.sheet.getRow(i);
-            if(row == null) {
+            if(null == row) {
                 continue;
             }
             final Cell cell = row.getCell(1);

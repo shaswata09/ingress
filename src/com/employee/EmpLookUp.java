@@ -18,7 +18,7 @@ import com.PMOProperties.ExcelFileDetails;
 
 public class EmpLookUp {
     final String fileName = ExcelFileDetails.EMPLOYEE_LOOKUP_FILE_NAME;
-    final String fullPath = ExcelFileDetails.PROJECT_FOLDER_PATH + this.fileName;
+    final String fullPath = ExcelFileDetails.EMPLOYEE_FOLDER_PATH + this.fileName;
     FileInputStream file;
     XSSFWorkbook workbook;
     XSSFSheet sheet;
@@ -46,7 +46,7 @@ public class EmpLookUp {
         
         for(int i = 1; i <= this.sheet.getLastRowNum(); i++) {
             final Row row = this.sheet.getRow(i);
-            if(row == null) {
+            if(null == row) {
                 continue;
             }
             final Cell cell = row.getCell(1);

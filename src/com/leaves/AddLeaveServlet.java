@@ -33,7 +33,8 @@ public class AddLeaveServlet extends HttpServlet {
 		String endDateString= request.getParameter("endDate").toString();
 		
 		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
-		Date startDate = null, endDate = null;	
+		Date startDate = null;
+		Date endDate = null;	
 		try {
 			startDate = formatter.parse(startDateString);
 			endDate = formatter.parse(endDateString);

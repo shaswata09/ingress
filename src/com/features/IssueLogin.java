@@ -15,8 +15,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.PMOProperties.ExcelFileDetails;
 
 public class IssueLogin {
-	final String fullPath =  ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
-	final String fullPath1 = ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOOKUP_FILE_NAME;
+	final String fullPath =  ExcelFileDetails.EMPLOYEE_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
+	final String fullPath1 = ExcelFileDetails.EMPLOYEE_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOOKUP_FILE_NAME;
 	FileInputStream file,file1;
     XSSFWorkbook workbook,workbook1;
     XSSFSheet sheet,empLookUpSheet;
@@ -62,7 +62,7 @@ public class IssueLogin {
 
         for(int i = 1; i <= this.sheet.getLastRowNum(); i++) {
             final Row row = this.sheet.getRow(i);
-            if(row == null) {
+            if(null == row) {
                 continue;
             }
             final Cell cell = row.getCell(0);
@@ -106,7 +106,7 @@ public class IssueLogin {
         }
 
         final FileOutputStream out = new FileOutputStream(
-                new File(ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME));
+                new File(this.fullPath));
         this.workbook.write(out);
         this.workbook.close();
         out.close();

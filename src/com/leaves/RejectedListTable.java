@@ -38,7 +38,7 @@ public class RejectedListTable {
             this.sheet = this.workbook.createSheet("Temp Table");
             int lastRowNumber = this.sheet.getLastRowNum();
             final FileOutputStream out = new FileOutputStream(
-                    new File(ExcelFileDetails.PROJECT_FOLDER_PATH +ExcelFileDetails.REJECTED_LIST));
+                    new File(this.fullPath));
             final Row row = this.sheet.createRow(++lastRowNumber);
             for(int i = 0; i < 11; i++) {
                 final Cell cell = row.createCell(i);

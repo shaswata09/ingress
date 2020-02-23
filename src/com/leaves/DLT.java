@@ -298,7 +298,7 @@ public class DLT {
             for(int i = 1; i <= this.sheet.getLastRowNum(); i++) {
                 final List<String> al = new ArrayList<String>();
                 final Row row = this.sheet.getRow(i);
-                if(row == null) {
+                if(null == row) {
                     continue;
                 }
                 final Cell cell = row.getCell(1);

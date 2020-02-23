@@ -18,7 +18,7 @@ public class Insert {
     XSSFWorkbook workbook;
     XSSFSheet sheet;
     FileInputStream file;
-    final String fullPath = ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
+    final String fullPath = ExcelFileDetails.EMPLOYEE_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
 
     public void insertEmployee() throws IOException {
     	

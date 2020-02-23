@@ -5,7 +5,7 @@
 	
 	<!-- Earnings (Monthly) Card Example -->
       <div class="col-xl-8 col-md-6 mb-4">
-      <a href="#" style="text-decoration: none;">
+      <a href="SwitchPages?pageName=quarterlyLeaveReport" style="text-decoration: none;">
         <div class="card border-left-info border-bottom-info shadow h-100 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -32,6 +32,7 @@
       </div>
       
      <div class="col-xl-4 col-md-6 mb-4">
+      <a href="SwitchPages?pageName=approveLeave" style="text-decoration: none;">
       <div class="card border-left-warning border-bottom-warning shadow h-100 py-2">
         <div class="card-body">
           <div class="row no-gutters align-items-center">
@@ -45,5 +46,6 @@
           </div>
         </div>
       </div>
+      </a>
     </div>
 </div>

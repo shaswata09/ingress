@@ -18,7 +18,7 @@ import com.employee.Employee;
 import com.PMOProperties.ExcelFileDetails;;
 
 public class Validate {
-	final String fullPath = ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
+	final String fullPath = ExcelFileDetails.EMPLOYEE_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
 	XSSFWorkbook workbook;
     XSSFSheet sheet;
     FileInputStream file;
@@ -51,7 +51,7 @@ public class Validate {
                         if(row.getCell(2).getStringCellValue().equals("1")) {
                             al.add("1");
                             final List<String> al2 = elu.searchId(id);
-                            if(al2 == null) {
+                            if(null == al2) {
                                 System.out.println("Found in login table but not present in ELT");
                                 return null;
                             }
@@ -61,7 +61,7 @@ public class Validate {
                         else {
                             al.add("0");
                             final List<String> al2 = elu.searchId(id);
-                            if(al2 == null) {
+                            if(null == al2) {
                                 System.out.println("Found in login table but not present in ELT");
                                 return null;
                             }
@@ -80,7 +80,7 @@ public class Validate {
             			if(Integer.toString(((int)row.getCell(2).getNumericCellValue())).equals("1")) {
                             al.add("1");
                             final List<String> al2 = elu.searchId(id);
-                            if(al2 == null) {
+                            if(null == al2) {
                                 System.out.println("Found in login table but not present in ELT");
                                 return null;
                             }
@@ -90,7 +90,7 @@ public class Validate {
             			else {
                             al.add("0");
                             final List<String> al2 = elu.searchId(id);
-                            if(al2 == null) {
+                            if(null == al2) {
                                 System.out.println("Found in login table but not present in ELT");
                                 return null;
                             }

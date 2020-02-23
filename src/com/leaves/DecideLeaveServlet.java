@@ -16,7 +16,7 @@ public class DecideLeaveServlet extends HttpServlet {
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		try {
-		String leaveStatus = request.getParameter("leaveStatusApprove")!= null ? request.getParameter("leaveStatusApprove"):request.getParameter("leaveStatusDecline");			
+		String leaveStatus = (null != request.getParameter("leaveStatusApprove")) ? request.getParameter("leaveStatusApprove"):request.getParameter("leaveStatusDecline");			
 		String[] leaveStatusDetails = leaveStatus.split(",");
 		
 		new TempTable().decision(Integer.parseInt(leaveStatusDetails[0]), leaveStatusDetails[1], leaveStatusDetails[2], Boolean.parseBoolean(leaveStatusDetails[3]));		

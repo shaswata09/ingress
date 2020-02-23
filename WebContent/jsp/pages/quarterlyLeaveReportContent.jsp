@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
 <!-- Begin Page Content -->
@@ -10,7 +10,7 @@
         <div class="card-header py-3">
           <div class="row">
             <div class="col-lg-4 col-md-5 col-sm-6">
-          	  <h6 class="m-0 font-weight-bold text-primary">Quarterly Leave Report</h6>
+          	  <h6 class="m-2 font-weight-bold text-primary">Quarterly Leave Report</h6>
             </div>
             <div class="col-lg-4 col-md-3 col-sm-0"></div>
           	<div class="col-lg-4 col-md-4 col-sm-0 form-group">

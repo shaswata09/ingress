@@ -16,7 +16,7 @@ public class UpdateEmployeeDetailsServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		try {
-			if(session.getAttribute("user") == null || ((Employee)session.getAttribute("user")).getEmployeeAccessRight().equals("0"))
+			if(null == session.getAttribute("user") || ((Employee)session.getAttribute("user")).getEmployeeAccessRight().equals("0"))
 				throw new Exception("Invalid user");
 			else 
 				session.setAttribute("pageName","dashboard");
