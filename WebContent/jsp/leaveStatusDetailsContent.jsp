@@ -52,7 +52,7 @@
         <div class="card-header py-3">
           <div class="row">
             <div class="col-lg-4 col-md-5 col-sm-6">
-          	  <h6 class="m-0 font-weight-bold text-primary">Quarterly Leave Report</h6>
+          	  <h6 class="m-0 font-weight-bold text-primary">Quarterly Leave Report(Approved)</h6>
             </div>
             <div class="col-lg-4 col-md-3 col-sm-0"></div>
             <div class="col-lg-4 col-md-4 col-sm-0 form-group">
@@ -63,10 +63,10 @@
 						  <c:forEach items="${filteredQuarterList}" var="quarter">
 							  <c:choose>
 							  	<c:when test="${ quarter.equals(currentQuarter)}">
-							  		<option value="${quarter}" selected><c:out value="${quarter}"/></option>
+							  		<option value="${quarter}" selected>${quarter}</option>
 							  	</c:when>
 							  	<c:otherwise>
-							  		<option value="${quarter}"><c:out value="${quarter}"/></option> 
+							  		<option value="${quarter}">${quarter}</option> 
 							  	</c:otherwise>
 							  </c:choose>					  	
 						  </c:forEach>				  					  
@@ -89,20 +89,18 @@
                 <tr role="row">   
                   <th>Start Date</th>            
                   <th>End Date</th>
-                  <th>Days</th>
-                  <th>Type</th>
+                  <th>Days</th>                  
                   <th>Month</th>
-                  <th>Status</th>                  
+                  <th>Type</th>                                 
                 </tr>
               </thead>
               <tfoot>
                 <tr>
                   <th>(yyyy-MM-dd)</th>            
                   <th>(yyyy-MM-dd)</th>
-                  <th>Days</th>
-                  <th>Type</th>
-                  <th>Month</th>
-                  <th>Status</th>                    
+                  <th>Days</th>                  
+                  <th>Month</th> 
+                  <th>Type</th>                                 
                 </tr>
               </tfoot>                           
               <tbody>                
@@ -110,10 +108,9 @@
 	                <tr>
 	                	<td>${approvedLeave.getStartDate()}</td>
 	                	<td>${approvedLeave.getEndDate()}</td>
-	                	<td>${approvedLeave.getNumberOfDays()}</td>
-	                	<td>${approvedLeave.getTypeOfLeave()}</td>
+	                	<td>${approvedLeave.getNumberOfDays()}</td>	                	
 	                	<td>${approvedLeave.getLeaveMonth()}</td>
-	                	<td>${approvedLeave.getComment()}</td>
+	                	<td>${approvedLeave.getTypeOfLeave()}</td>	                	
 	                </tr>  
                 </c:forEach>                  
               </tbody>

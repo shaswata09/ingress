@@ -87,22 +87,35 @@ public class SwitchPagesServlet extends HttpServlet {
 						session.removeAttribute("editDetailsEmployee");
 						
 					if(pageName.equals("dashboard")) {
-						request.setAttribute("quarterlyLeaveCount",(new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable(null)).size());
+						int [] quarterlyLeaveCount = LeaveServiceHelper.getLeaveTypeCount(new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable(null));
+						request.setAttribute("quarterlyLeaveCount",(quarterlyLeaveCount[0]+quarterlyLeaveCount[1]));
+						
 						int [] selfLeaveCount = LeaveServiceHelper.getLeaveTypeCount(new DLT(QuarterServiceHelper.
 								getCurrentQuarter()).showTable(((Employee)session.getAttribute("user")).getEmployeeId()));
-						request.setAttribute("selfLeaveCount", selfLeaveCount);
+						request.setAttribute("selfLeaveCount", selfLeaveCount);						
 						int[] selfLeaveTypeRatio = LeaveServiceHelper.getLeaveTypeRatioPercentage(selfLeaveCount);						
 						request.setAttribute("selfLeaveTypeRatio", selfLeaveTypeRatio);
+						
 						request.setAttribute("pendingLeaveCount", (new TempTable().showTable(null)).size());
 						request.setAttribute("totalEmployeeCount", (new EmployeeDetailsList().returnList()).size());
 						
-					} else if(pageName.equals("employeeDetails") || pageName.equals("addLeave")) {
+					} 
+					else if(pageName.equals("employeeDetails") || pageName.equals("addLeave")) {
 						request.setAttribute("employeeList", new EmployeeDetailsList().returnList());
-					} else if(pageName.equals("approveLeave")) {		//creating and removing Pending leave list as required	
+					} 
+					else if(pageName.equals("approveLeave")) {		//creating and removing Pending leave list as required	
 						List<DltObject> pendingLeaveList = new TempTable().showTable(null);
 						request.setAttribute("pendingLeaveList", pendingLeaveList);
+						
 						request.setAttribute("pendingLeaveCount", pendingLeaveList.size());
-					} else if(pageName.equals("quarterlyLeaveReport")) {
+						
+						int [] quarterlyLeaveCount = LeaveServiceHelper.getLeaveTypeCount(new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable(null));
+						request.setAttribute("quarterlyLeaveCount",quarterlyLeaveCount);
+						int[] quarterlyLeaveTypeRatio = LeaveServiceHelper.getLeaveTypeRatioPercentage(quarterlyLeaveCount);						
+						request.setAttribute("quarterlyLeaveTypeRatio", quarterlyLeaveTypeRatio);
+						
+					} 
+					else if(pageName.equals("quarterlyLeaveReport")) {
 						if(null == request.getAttribute("changedQuarterFlag")) {
 							request.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
 							request.setAttribute("quarterlyLeaveList",new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable(null));
@@ -112,7 +125,8 @@ public class SwitchPagesServlet extends HttpServlet {
 							request.removeAttribute("changedQuarterFlag");
 						}
 																
-					} else if(pageName.equals("selfLeaveStatus")) {
+					} 
+					else if(pageName.equals("selfLeaveStatus")) {
 						if(null == request.getAttribute("changedQuarterFlag")) {
 						request.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
 						request.setAttribute("quarterlyLeaveList",new DLT(QuarterServiceHelper.getCurrentQuarter()).

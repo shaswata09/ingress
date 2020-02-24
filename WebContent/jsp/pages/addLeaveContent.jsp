@@ -22,7 +22,7 @@
               		<c:otherwise>   	
               			<select id="searchEmployeeDropdown" name="userID" class="form-control form-control-user">						  
 						  <c:forEach items="${employeeList}" var="employee">
-						  	<option value='${employee.getEmployeeId()}'><c:out value="${employee.getEmployeeName()}"/> (<c:out value="${employee.getEmployeeId()}"/>)</option> 
+						  	<option value='${employee.getEmployeeId()}'>${employee.getEmployeeName()} (${employee.getEmployeeId()})</option> 
 						  </c:forEach> 						  
 						</select>
               		</c:otherwise>

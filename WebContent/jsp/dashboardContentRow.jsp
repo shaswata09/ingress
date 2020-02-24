@@ -13,7 +13,7 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Quarterly Leave</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">Count: <c:out value="${quarterlyLeaveCount}"/></div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${quarterlyLeaveCount}</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -35,7 +35,7 @@
                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Personal Leave</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><c:out value="${selfLeaveCount[0]}"/>:<c:out value="${selfLeaveCount[1]}"/></div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${selfLeaveCount[0]}:${selfLeaveCount[1]}</div>
                   </div>
                   <div class="col">
                     <div class="progress progress-sm mr-2">
@@ -64,7 +64,7 @@
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pending Leaves</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">Count: <c:out value="${pendingLeaveCount}"/></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${pendingLeaveCount}</div>
                   </div>                  
                 </div>
               </div>
@@ -85,7 +85,7 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Edit Employee</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">Count: <c:out value="${totalEmployeeCount}"/></div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${totalEmployeeCount}</div>
               </div>
               <div class="col-auto">
               	<i class="fas fa-portrait fa-2x text-gray-300"></i>

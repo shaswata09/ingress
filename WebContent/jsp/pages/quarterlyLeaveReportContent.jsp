@@ -21,10 +21,10 @@
 						  <c:forEach items="${filteredQuarterList}" var="quarter">
 							  <c:choose>
 							  	<c:when test="${ quarter.equals(currentQuarter)}">
-							  		<option value="${quarter}" selected><c:out value="${quarter}"/></option>
+							  		<option value="${quarter}" selected>${quarter}</option>
 							  	</c:when>
 							  	<c:otherwise>
-							  		<option value="${quarter}"><c:out value="${quarter}"/></option> 
+							  		<option value="${quarter}">${quarter}</option> 
 							  	</c:otherwise>
 							  </c:choose>					  	
 						  </c:forEach>				  					  

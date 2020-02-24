@@ -10,14 +10,18 @@
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Leaves VS Pending Leaves</div>
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Planned VS Unplanned Leaves (Current Quarter)</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">70%</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                    ${quarterlyLeaveCount[0]}:${quarterlyLeaveCount[1]}
+                    </div>
                   </div>
                   <div class="col">
                     <div class="progress progress-sm mr-2">
-                      <div class="progress-bar bg-info" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-info" role="progressbar" 
+                      style="width:  ${quarterlyLeaveTypeRatio[0]}%" 
+                      aria-valuenow="${quarterlyLeaveTypeRatio[0]}" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                   </div>
                 </div>
@@ -38,7 +42,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests (Quarterly)</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800"><c:out value="${pendingLeaveCount}"/> Pending Leaves</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">${pendingLeaveCount} Pending Leaves</div>
             </div>
             <div class="col-auto">
               <i class="fas fa-comments fa-2x text-gray-300"></i>
