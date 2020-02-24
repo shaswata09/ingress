@@ -17,9 +17,9 @@ import com.enums.AdminPages;
 import com.enums.EmployeePages;
 import com.features.QuarterServiceHelper;
 import com.leaves.DLT;
+import com.leaves.DltObject;
 import com.leaves.LeaveServiceHelper;
 import com.leaves.TempTable;
-import com.leaves.TempTableObject;
 
 @WebServlet("/SwitchPages")
 public class SwitchPagesServlet extends HttpServlet {
@@ -99,7 +99,7 @@ public class SwitchPagesServlet extends HttpServlet {
 					} else if(pageName.equals("employeeDetails") || pageName.equals("addLeave")) {
 						request.setAttribute("employeeList", new EmployeeDetailsList().returnList());
 					} else if(pageName.equals("approveLeave")) {		//creating and removing Pending leave list as required	
-						List<TempTableObject> pendingLeaveList = new TempTable().showTable(null);
+						List<DltObject> pendingLeaveList = new TempTable().showTable(null);
 						request.setAttribute("pendingLeaveList", pendingLeaveList);
 						request.setAttribute("pendingLeaveCount", pendingLeaveList.size());
 					} else if(pageName.equals("quarterlyLeaveReport")) {

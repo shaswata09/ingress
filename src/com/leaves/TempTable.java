@@ -247,18 +247,22 @@ public class TempTable {
         }
     }
     
-    void decision(int empId, String startDate, String endDate, boolean approval)
+    public boolean decision(int empId, String startDate, String endDate, boolean approval)
 	{
     	List<String> list=getDetails(empId,startDate,endDate);
 		if(approval)
 		{
 			list.set(10,"approved");
-			try {				
-				new DLT(QuarterServiceHelper.findQuarterByDate(startDate)).addToTable(list);
-				this.deleteRow(empId, startDate, endDate);
+			try {
+				if(!LeaveServiceHelper.checkLeaveConflict(String.valueOf(empId), "planned", startDate, endDate)) {
+					new DLT(QuarterServiceHelper.findQuarterByDate(startDate)).addToTable(list);
+					this.deleteRow(empId, startDate, endDate);
+					return true;
+				}
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.printStackTrace();				
 			}
 		}
 		else
@@ -272,6 +276,7 @@ public class TempTable {
 				e.printStackTrace();
 			}
 		}
+		return false;
 	}
     
     public List<List<String>> returnList(String employeeID) throws IOException {
@@ -324,22 +329,28 @@ public class TempTable {
         return finalList;// returns null if finds nothing-- so have to handle it
     } 
 
-    public List<TempTableObject> showTable(String employeeID) throws IOException {
-        final TempTableObject obj = new TempTableObject();
-        final List<TempTableObject> list = new ArrayList<TempTableObject>();
-        final List<List<String>> list2 = returnList(employeeID);
-        if(null == employeeID) {
-        	for(int i = 1; i < list2.size(); i++) {
-                final List<String> temp = list2.get(i);
-                list.add(obj.returnObject(temp));
-            }
-        }
-        else {
-        	for(int i = 0; i < list2.size(); i++) {
-                final List<String> temp = list2.get(i);
-                list.add(obj.returnObject(temp));
-            }
-        }       
-        return list;
+    public List<DltObject> showTable(String employeeID){
+    	try {
+	        final DltObject obj = new DltObject();
+	        final List<DltObject> list = new ArrayList<DltObject>();
+	        final List<List<String>> list2 = returnList(employeeID);
+	        if(null == employeeID) {
+	        	for(int i = 1; i < list2.size(); i++) {
+	                final List<String> temp = list2.get(i);
+	                list.add(obj.returnObject(temp));
+	            }
+	        }
+	        else {
+	        	for(int i = 0; i < list2.size(); i++) {
+	                final List<String> temp = list2.get(i);
+	                list.add(obj.returnObject(temp));
+	            }
+	        }       
+	        return list;
+    	}
+		catch (Exception exception) {
+			System.out.println("Null Pointer Exception due to missing file.");
+			return null;
+		}    
     } 
 }

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.PMOProperties.UserActionMessages;
+
 @WebServlet("/DecideLeave")
 public class DecideLeaveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -18,8 +20,18 @@ public class DecideLeaveServlet extends HttpServlet {
 		try {
 		String leaveStatus = (null != request.getParameter("leaveStatusApprove")) ? request.getParameter("leaveStatusApprove"):request.getParameter("leaveStatusDecline");			
 		String[] leaveStatusDetails = leaveStatus.split(",");
+		boolean leaveApplyFlag = false;
 		
-		new TempTable().decision(Integer.parseInt(leaveStatusDetails[0]), leaveStatusDetails[1], leaveStatusDetails[2], Boolean.parseBoolean(leaveStatusDetails[3]));		
+		leaveApplyFlag = new TempTable().decision(Integer.parseInt(leaveStatusDetails[0]), 
+				leaveStatusDetails[1], leaveStatusDetails[2], Boolean.parseBoolean(leaveStatusDetails[3]));
+		
+		if(leaveApplyFlag)
+			request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_APPROVED);
+		else {
+			request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_CONFLICT);
+			request.setAttribute("userActionMessageSecondary", UserActionMessages.SAME_DATE_LEAVE_PRESENT);
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("SwitchPages?pageName=approveLeave");
 		rd.forward(request, response);
 		}catch(Exception exception) {

@@ -22,6 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.employee.*;
 import com.PMOProperties.*;
+import com.features.*;;
 
 public class DLT {    
 	final String filePath = ExcelFileDetails.LEAVES_FOLDER_PATH;
@@ -42,53 +43,58 @@ public class DLT {
         }
     }
 
-    public void addLeaveIntoTables(final int empId, final String typeOfLeave, final String start, final String end)
+    public boolean addLeaveIntoTables(final int empId, final String typeOfLeave, final String start, final String end)
             throws IOException, ParseException {
-        final EmpLookUp empObj = new EmpLookUp();
-        
+    	
+    	if(LeaveServiceHelper.checkLeaveConflict(String.valueOf(empId), typeOfLeave, start, end)) {
+    		return false;
+    	}
+    	else {
+    		 final EmpLookUp empObj = new EmpLookUp();
+    	        final List<String> empDetails = empObj.searchId(Integer.toString(empId));
+    	        final List<List<String>> tempLeave = getLeave(start, end);
+    	        for(int i = 0; i < tempLeave.size(); i++) {
 
-        final List<String> empDetails = empObj.searchId(Integer.toString(empId));
-        final List<List<String>> tempLeave = getLeave(start, end);
-        for(int i = 0; i < tempLeave.size(); i++) {
+    	            final List<String> finalList = new ArrayList<String>();
 
-            final List<String> finalList = new ArrayList<String>();
+    	            final List<String> temp = tempLeave.get(i);
+    	            final String month = temp.get(0).split("-")[1];
+    	            final long noOfDays = this.dateDiff(temp.get(0), temp.get(1))
+    	                    - getWorkingDaysBetweenTwoDates(temp.get(0), temp.get(1));
 
-            final List<String> temp = tempLeave.get(i);
-            final String month = temp.get(0).split("-")[1];
-            final long noOfDays = this.dateDiff(temp.get(0), temp.get(1))
-                    - getWorkingDaysBetweenTwoDates(temp.get(0), temp.get(1));
+    	            if(typeOfLeave.equalsIgnoreCase("unplanned")) {
+    	                finalList.add(empDetails.get(1));
+    	                finalList.add(empDetails.get(0));
+    	                finalList.add(empDetails.get(2));
+    	                finalList.add(temp.get(0));
+    	                finalList.add(temp.get(1));
+    	                finalList.add(getMonth(month));
+    	                finalList.add(Long.toString(noOfDays));
+    	                finalList.add("unplanned");
+    	                finalList.add(empDetails.get(3));
+    	                finalList.add(empDetails.get(5));
+    	                finalList.add("approved");
+    	                addToTable(finalList);
 
-            if(typeOfLeave.equalsIgnoreCase("unplanned")) {
-                finalList.add(empDetails.get(1));
-                finalList.add(empDetails.get(0));
-                finalList.add(empDetails.get(2));
-                finalList.add(temp.get(0));
-                finalList.add(temp.get(1));
-                finalList.add(getMonth(month));
-                finalList.add(Long.toString(noOfDays));
-                finalList.add("unplanned");
-                finalList.add(empDetails.get(3));
-                finalList.add(empDetails.get(5));
-                finalList.add("approved");
-                addToTable(finalList);
+    	            } else if(typeOfLeave.equalsIgnoreCase("planned")) {
+    	                final TempTable tableObj = new TempTable();
+    	                finalList.add(empDetails.get(1));
+    	                finalList.add(empDetails.get(0));
+    	                finalList.add(empDetails.get(2));
+    	                finalList.add(temp.get(0));
+    	                finalList.add(temp.get(1));
+    	                finalList.add(getMonth(month));
+    	                finalList.add(Long.toString(noOfDays));
+    	                finalList.add("planned");
+    	                finalList.add(empDetails.get(3));
+    	                finalList.add(empDetails.get(5));
+    	                finalList.add("pending");
 
-            } else if(typeOfLeave.equalsIgnoreCase("planned")) {
-                final TempTable tableObj = new TempTable();
-                finalList.add(empDetails.get(1));
-                finalList.add(empDetails.get(0));
-                finalList.add(empDetails.get(2));
-                finalList.add(temp.get(0));
-                finalList.add(temp.get(1));
-                finalList.add(getMonth(month));
-                finalList.add(Long.toString(noOfDays));
-                finalList.add("planned");
-                finalList.add(empDetails.get(3));
-                finalList.add(empDetails.get(5));
-                finalList.add("pending");
-
-                tableObj.insert(finalList);
-            }
-        }
+    	                tableObj.insert(finalList);
+    	            }
+    	        }
+    	        return true;
+    	}      
     }
 
     public List<List<String>> getLeave(final String startMain, final String endMain) {
@@ -271,7 +277,7 @@ public class DLT {
         return weekEnds;
     }   
     
-    public List<DltObject> showTable(String employeeID) throws IOException {			//call to get quarterly leave report
+    public List<DltObject> showTable(String employeeID){			//call to get quarterly leave report
     	try {    		
             final DltObject obj = new DltObject();
             final List<DltObject> list = new ArrayList<DltObject>();            

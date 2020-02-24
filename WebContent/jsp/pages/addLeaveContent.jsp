@@ -20,8 +20,7 @@
               			 <input type="text" class="form-control form-control-user" name="userID" placeholder="${user.getEmployeeName()}"  disabled>
               		</c:when>
               		<c:otherwise>   	
-              			<select id="searchEmployeeDropdown" name="userID" class="form-control form-control-user">
-						  <option value='0'>Select Employee</option>
+              			<select id="searchEmployeeDropdown" name="userID" class="form-control form-control-user">						  
 						  <c:forEach items="${employeeList}" var="employee">
 						  	<option value='${employee.getEmployeeId()}'><c:out value="${employee.getEmployeeName()}"/> (<c:out value="${employee.getEmployeeId()}"/>)</option> 
 						  </c:forEach> 						  
