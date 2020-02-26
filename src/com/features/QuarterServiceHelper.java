@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.PMOProperties.*;
 
@@ -179,5 +180,26 @@ public class QuarterServiceHelper {
 	
 	public static Boolean isQuarterDirectoryPresent (String quarterName) {
 		return getAllQuarterList().contains(quarterName);		
-	}	
+	}
+	
+	public static String findYearByQuarter(String quarterInfo) {
+		if(isQuarterValid(quarterInfo))
+			return ("20"+quarterInfo.substring(3));
+		else
+			return null; 
+	}
+	
+	public static List<String> findQuartersByYear(String year){
+		String minYear = year.substring(2);
+		List<String> yearlyQuartersList = new ArrayList<String>();
+		yearlyQuartersList.add("Q4'"+minYear);
+		yearlyQuartersList.add("Q1'"+minYear);
+		yearlyQuartersList.add("Q2'"+minYear);
+		yearlyQuartersList.add("Q3'"+minYear);
+		return yearlyQuartersList;				
+	}
+	
+	public static void main (String args[]) {
+		System.out.println(findQuartersByYear("2019"));
+	}
 }

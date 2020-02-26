@@ -2,6 +2,7 @@ package com.leaves;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -74,4 +75,54 @@ public class LeaveServiceHelper {
     	}
     	return false;
     }
+	
+	public static List<DltObject> findYearlyLeaveList(String year, String employeeID){
+		List<String> yearlyQuartersList = QuarterServiceHelper.findQuartersByYear(year);
+		List<DltObject> yearlyLeaveList = new ArrayList<DltObject>();
+		
+		for(String quarter : yearlyQuartersList) {
+			yearlyLeaveList.addAll(new DLT(quarter).showTable(employeeID));
+		}
+		return yearlyLeaveList;
+	}
+	
+	public static int[] findMonthlyLeaveCount(List<DltObject> yearlyLeaveList) {
+		int[] monthlyLeaveCount = new int [12];
+		for(DltObject leave : yearlyLeaveList) {
+			if(leave.getLeaveMonth().equalsIgnoreCase("January"))
+				monthlyLeaveCount[0]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("February"))
+				monthlyLeaveCount[1]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("March"))
+				monthlyLeaveCount[2]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("April"))
+				monthlyLeaveCount[3]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("May"))
+				monthlyLeaveCount[4]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("June"))
+				monthlyLeaveCount[5]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("July"))
+				monthlyLeaveCount[6]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("August"))
+				monthlyLeaveCount[7]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("September"))
+				monthlyLeaveCount[8]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("October"))
+				monthlyLeaveCount[9]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("November"))
+				monthlyLeaveCount[10]+=leave.getNumberOfDays();
+			else if(leave.getLeaveMonth().equalsIgnoreCase("December"))
+				monthlyLeaveCount[11]+=leave.getNumberOfDays();
+		}
+		return monthlyLeaveCount;
+	}
+	
+	public static int[] findYearlyLeaveCount(String year, String employeeID) {
+		return findMonthlyLeaveCount(findYearlyLeaveList(year, employeeID));
+	}
+	
+	public static void main(String args[]) {
+		for(int i : findYearlyLeaveCount("2020", null))
+			System.out.println(i);
+	}
 }

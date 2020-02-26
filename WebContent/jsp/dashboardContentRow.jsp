@@ -13,7 +13,7 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Quarterly Leave</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${quarterlyLeaveCount}</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${quarterlyLeaveCount[0]+quarterlyLeaveCount[1]}</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -64,7 +64,7 @@
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pending Leaves</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${pendingLeaveCount}</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${pendingLeaveNumbers}</div>
                   </div>                  
                 </div>
               </div>

@@ -51,19 +51,30 @@ public class SwitchPagesServlet extends HttpServlet {
 					else
 						session.setAttribute("pageName",pageName);
 					
-					if((session.getAttribute("pageName").toString()).equalsIgnoreCase("selfLeaveStatus")) {					
+					if((session.getAttribute("pageName").toString()).equalsIgnoreCase("selfLeaveStatus")) {
+						List<DltObject> quarterlyLeaveList = new DLT(QuarterServiceHelper.getCurrentQuarter()).
+								showTable(((Employee)session.getAttribute("user")).getEmployeeId());
+						int[] quarterlyLeaveCount = LeaveServiceHelper.getLeaveTypeCount(quarterlyLeaveList);
+						session.setAttribute("quarterlyLeaveCount", quarterlyLeaveCount);
+						
+						List<DltObject> pendingSelfLeaveList = new TempTable().showTable(((Employee)session.getAttribute("user")).getEmployeeId());
+						int pendingLeaveCount = (LeaveServiceHelper.getLeaveTypeCount(pendingSelfLeaveList))[0];
+						session.setAttribute("pendingLeaveCount", pendingLeaveCount);
+						
+						session.setAttribute("monthlyLeaveCount", LeaveServiceHelper.findYearlyLeaveCount(
+								QuarterServiceHelper.findYearByQuarter(QuarterServiceHelper.getCurrentQuarter()), 
+								((Employee)session.getAttribute("user")).getEmployeeId()));
+						
+						session.setAttribute("pendingSelfLeaveList", pendingSelfLeaveList);
 						session.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());						
 						if(null == request.getAttribute("quarterlyLeaveList")) {
-							session.setAttribute("quarterlyLeaveList", new DLT(QuarterServiceHelper.getCurrentQuarter()).
-									showTable(((Employee)session.getAttribute("user")).getEmployeeId()));
-							session.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());							
+							session.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());
+							session.setAttribute("quarterlyLeaveList", quarterlyLeaveList);														
 						}
 						else {
 							session.setAttribute("quarterlyLeaveList", request.getAttribute("quarterlyLeaveList"));
-							session.setAttribute("currentQuarter", request.getAttribute("currentQuarter"));
-							
-						}
-						session.setAttribute("pendingSelfLeaveList", new TempTable().showTable(((Employee)session.getAttribute("user")).getEmployeeId()));
+							session.setAttribute("currentQuarter", request.getAttribute("currentQuarter"));							
+						}						
 					}
 					else {
 						session.removeAttribute("filteredQuarterList");
@@ -88,7 +99,7 @@ public class SwitchPagesServlet extends HttpServlet {
 						
 					if(pageName.equals("dashboard")) {
 						int [] quarterlyLeaveCount = LeaveServiceHelper.getLeaveTypeCount(new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable(null));
-						request.setAttribute("quarterlyLeaveCount",(quarterlyLeaveCount[0]+quarterlyLeaveCount[1]));
+						request.setAttribute("quarterlyLeaveCount", quarterlyLeaveCount);
 						
 						int [] selfLeaveCount = LeaveServiceHelper.getLeaveTypeCount(new DLT(QuarterServiceHelper.
 								getCurrentQuarter()).showTable(((Employee)session.getAttribute("user")).getEmployeeId()));
@@ -96,8 +107,15 @@ public class SwitchPagesServlet extends HttpServlet {
 						int[] selfLeaveTypeRatio = LeaveServiceHelper.getLeaveTypeRatioPercentage(selfLeaveCount);						
 						request.setAttribute("selfLeaveTypeRatio", selfLeaveTypeRatio);
 						
-						request.setAttribute("pendingLeaveCount", (new TempTable().showTable(null)).size());
+						List<DltObject> pendingLeaveList = new TempTable().showTable(null);
+						request.setAttribute("pendingLeaveNumbers", pendingLeaveList.size());
+						int pendingLeaveCount = (LeaveServiceHelper.getLeaveTypeCount(pendingLeaveList))[0];
+						request.setAttribute("pendingLeaveCount", pendingLeaveCount);
+						
 						request.setAttribute("totalEmployeeCount", (new EmployeeDetailsList().returnList()).size());
+						
+						request.setAttribute("monthlyLeaveCount", LeaveServiceHelper.findYearlyLeaveCount(
+								QuarterServiceHelper.findYearByQuarter(QuarterServiceHelper.getCurrentQuarter()), null));
 						
 					} 
 					else if(pageName.equals("employeeDetails") || pageName.equals("addLeave")) {
@@ -107,7 +125,7 @@ public class SwitchPagesServlet extends HttpServlet {
 						List<DltObject> pendingLeaveList = new TempTable().showTable(null);
 						request.setAttribute("pendingLeaveList", pendingLeaveList);
 						
-						request.setAttribute("pendingLeaveCount", pendingLeaveList.size());
+						request.setAttribute("pendingLeaveNumbers", pendingLeaveList.size());
 						
 						int [] quarterlyLeaveCount = LeaveServiceHelper.getLeaveTypeCount(new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable(null));
 						request.setAttribute("quarterlyLeaveCount",quarterlyLeaveCount);
@@ -127,12 +145,23 @@ public class SwitchPagesServlet extends HttpServlet {
 																
 					} 
 					else if(pageName.equals("selfLeaveStatus")) {
+						List<DltObject> quarterlyLeaveList = new DLT(QuarterServiceHelper.getCurrentQuarter()).
+								showTable(((Employee)session.getAttribute("user")).getEmployeeId());
+						int[] quarterlyLeaveCount = LeaveServiceHelper.getLeaveTypeCount(quarterlyLeaveList);
+						request.setAttribute("quarterlyLeaveCount", quarterlyLeaveCount);
+						
+						List<DltObject> pendingSelfLeaveList = new TempTable().showTable(((Employee)session.getAttribute("user")).getEmployeeId());
+						int pendingLeaveCount = (LeaveServiceHelper.getLeaveTypeCount(pendingSelfLeaveList))[0];
+						request.setAttribute("pendingLeaveCount", pendingLeaveCount);
+						request.setAttribute("monthlyLeaveCount", LeaveServiceHelper.findYearlyLeaveCount(
+								QuarterServiceHelper.findYearByQuarter(QuarterServiceHelper.getCurrentQuarter()), 
+								((Employee)session.getAttribute("user")).getEmployeeId()));
+						
+						request.setAttribute("pendingSelfLeaveList", pendingSelfLeaveList);
 						if(null == request.getAttribute("changedQuarterFlag")) {
 						request.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
-						request.setAttribute("quarterlyLeaveList",new DLT(QuarterServiceHelper.getCurrentQuarter()).
-								showTable(((Employee)session.getAttribute("user")).getEmployeeId()));
 						request.setAttribute("currentQuarter", QuarterServiceHelper.getCurrentQuarter());
-						request.setAttribute("pendingSelfLeaveList", new TempTable().showTable(((Employee)session.getAttribute("user")).getEmployeeId()));
+						request.setAttribute("quarterlyLeaveList", quarterlyLeaveList);						
 						}
 						else {
 							request.removeAttribute("changedQuarterFlag");

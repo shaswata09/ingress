@@ -33,15 +33,18 @@
         <div class="chart-pie pt-4 pb-2">
           <canvas id="myPieChart"></canvas>
         </div>
+        <input id="pannedLeaveCount" type="hidden" value="${quarterlyLeaveCount[0]}"/>
+        <input id="unpannedLeaveCount" type="hidden" value="${quarterlyLeaveCount[1]}"/>
+        <input id="pendingLeaveCount" type="hidden" value="${pendingLeaveCount}"/>
         <div class="mt-4 text-center small">
           <span class="mr-2">
-            <i class="fas fa-circle text-primary"></i> Planned
+            <i class="fas fa-circle text-success"></i> Planned
           </span>
           <span class="mr-2">
-            <i class="fas fa-circle text-success"></i> Pending
-          </span>
+            <i class="fas fa-circle text-primary"></i> Unplanned
+          </span>          
           <span class="mr-2">
-            <i class="fas fa-circle text-info"></i> Unplanned
+            <i class="fas fa-circle text-info"></i> Pending
           </span>
         </div>
       </div>
