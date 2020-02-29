@@ -30,96 +30,6 @@ public class TempTable {
     final String fullPath = ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.TEMP_TABLE;
     CreationHelper createHelper;
     CellStyle dateCellStyle;
-
-    public void insert(final List<String> finalList) throws IOException {
-
-        try {
-            this.file = new FileInputStream(new File(this.fullPath));
-            this.workbook = new XSSFWorkbook(this.file);
-            this.sheet = this.workbook.getSheetAt(0);
-            this.createHelper = this.workbook.getCreationHelper();
-            this.dateCellStyle = this.workbook.createCellStyle();
-            this.dateCellStyle.setDataFormat(this.createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
-        } catch(final IOException io) { // if the file is not present then it will create the file
-                                        // first and call again
-            // Blank workbook
-            this.workbook = new XSSFWorkbook();
-
-            // Create a blank sheet
-            this.sheet = this.workbook.createSheet("Temp Table");
-            int lastRowNumber = this.sheet.getLastRowNum();
-            final FileOutputStream out = new FileOutputStream(
-                    new File(this.fullPath));
-            final Row row = this.sheet.createRow(++lastRowNumber);
-            for(int i = 0; i < 11; i++) {
-                final Cell cell = row.createCell(i);
-                if(i == 0) {
-                    cell.setCellValue("Emp Id");
-                } else if(i == 1) {
-                    cell.setCellValue("Emp Name");
-                } else if(i == 2) {
-                    cell.setCellValue("Project");
-                } else if(i == 3) {
-                    cell.setCellValue("Start Date");
-                } else if(i == 4) {
-                    cell.setCellValue("End Date");
-                } else if(i == 5) {
-                    cell.setCellValue("Leave Month");
-                } else if(i == 6) {
-                    cell.setCellValue("Number Of Days");
-                } else if(i == 7) {
-                    cell.setCellValue("Type Of Leave");
-                } else if(i == 8) {
-                    cell.setCellValue("Location");
-                } else if(i == 9) {
-                    cell.setCellValue("SOW");
-                } else if(i == 10) {
-                    cell.setCellValue("Comment");
-                }
-
-            }
-            this.workbook.write(out);
-            out.close();
-            insert(finalList);
-            return;
-        }
-        int lastRowNumber = this.sheet.getLastRowNum();
-
-        final Row row = this.sheet.createRow(++lastRowNumber);
-        for(int i = 0; i < 11; i++) {
-            final Cell cell = row.createCell(i);
-            if(i == 0) {
-                cell.setCellValue(Integer.parseInt(finalList.get(i)));
-            } else if(i == 1) {
-                cell.setCellValue(finalList.get(i));
-            } else if(i == 2) {
-                cell.setCellValue(finalList.get(i));
-            } else if(i == 3) {
-                cell.setCellValue(finalList.get(i));
-                cell.setCellStyle(this.dateCellStyle);
-            } else if(i == 4) {
-                cell.setCellValue(finalList.get(i));
-                cell.setCellStyle(this.dateCellStyle);
-            } else if(i == 5) {
-                cell.setCellValue(finalList.get(i));
-            } else if(i == 6) {
-                cell.setCellValue(Long.parseLong(finalList.get(i)));
-            } else if(i == 7) {
-                cell.setCellValue(finalList.get(i));
-            } else if(i == 8) {
-                cell.setCellValue(finalList.get(i));
-            } else if(i == 9) {
-                cell.setCellValue(finalList.get(i));
-            } else if(i == 10) {
-                cell.setCellValue(finalList.get(i));
-            }
-        }
-        final FileOutputStream out = new FileOutputStream(
-                new File(this.fullPath));
-        this.workbook.write(out);
-        out.close();
-
-    }
     
     public List<String> getDetails(int empId,String startDate,String endDate)
     {
@@ -335,7 +245,7 @@ public class TempTable {
 	        final List<DltObject> list = new ArrayList<DltObject>();
 	        final List<List<String>> list2 = returnList(employeeID);
 	        if(null == employeeID) {
-	        	for(int i = 1; i < list2.size(); i++) {
+	        	for(int i = 0; i < list2.size(); i++) {
 	                final List<String> temp = list2.get(i);
 	                list.add(obj.returnObject(temp));
 	            }

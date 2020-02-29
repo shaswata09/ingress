@@ -108,7 +108,11 @@ public class SwitchPagesServlet extends HttpServlet {
 						request.setAttribute("selfLeaveTypeRatio", selfLeaveTypeRatio);
 						
 						List<DltObject> pendingLeaveList = new TempTable().showTable(null);
-						request.setAttribute("pendingLeaveNumbers", pendingLeaveList.size());
+						if(null == pendingLeaveList)
+							request.setAttribute("pendingLeaveNumbers", 0);
+						else
+							request.setAttribute("pendingLeaveNumbers", pendingLeaveList.size());
+						
 						int pendingLeaveCount = (LeaveServiceHelper.getLeaveTypeCount(pendingLeaveList))[0];
 						request.setAttribute("pendingLeaveCount", pendingLeaveCount);
 						
@@ -125,7 +129,10 @@ public class SwitchPagesServlet extends HttpServlet {
 						List<DltObject> pendingLeaveList = new TempTable().showTable(null);
 						request.setAttribute("pendingLeaveList", pendingLeaveList);
 						
-						request.setAttribute("pendingLeaveNumbers", pendingLeaveList.size());
+						if(null == pendingLeaveList)
+							request.setAttribute("pendingLeaveNumbers", 0);
+						else
+							request.setAttribute("pendingLeaveNumbers", pendingLeaveList.size());
 						
 						int [] quarterlyLeaveCount = LeaveServiceHelper.getLeaveTypeCount(new DLT(QuarterServiceHelper.getCurrentQuarter()).showTable(null));
 						request.setAttribute("quarterlyLeaveCount",quarterlyLeaveCount);

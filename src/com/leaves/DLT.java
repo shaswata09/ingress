@@ -75,8 +75,7 @@ public class DLT {
     	                finalList.add("approved");
     	                addToTable(finalList);
 
-    	            } else if(typeOfLeave.equalsIgnoreCase("planned")) {
-    	                final TempTable tableObj = new TempTable();
+    	            } else if(typeOfLeave.equalsIgnoreCase("planned")) {    	                
     	                finalList.add(empDetails.get(1));
     	                finalList.add(empDetails.get(0));
     	                finalList.add(empDetails.get(2));
@@ -89,16 +88,15 @@ public class DLT {
     	                finalList.add(empDetails.get(5));
     	                finalList.add("pending");
 
-    	                tableObj.insert(finalList);
+    	                LeaveServiceImpl.insertLeaveIntoTable(finalList, ExcelFileDetails.PROJECT_FOLDER_PATH, 
+    	                		ExcelFileDetails.TEMP_TABLE);
     	            }
     	        }
     	        return true;
     	}      
     }
 
-    public List<List<String>> getLeave(final String startMain, final String endMain) {
-        
-        
+    public List<List<String>> getLeave(final String startMain, final String endMain) {       
         final List<List<String>> finalList = new ArrayList<List<String>>();
 
         String start = startMain;
@@ -110,7 +108,6 @@ public class DLT {
         long dateDiff = dateDiff(start, end);
         long daysInMon = daysInMonth(year, month) - day + 1;
        
-
         while(true) {
             if(dateDiff == 0) {
                 break;
@@ -147,9 +144,9 @@ public class DLT {
             }
         }
         return finalList;
-
     }
 
+    
     public long dateDiff(final String dateStart, final String dateStop) {
 
 
@@ -175,6 +172,7 @@ public class DLT {
         return diffDays + 1;
     }
 
+    
     public int daysInMonth(final int year, final int month) {
         final YearMonth yearMonthObject = YearMonth.of(year, month);
         final int daysInMonth = yearMonthObject.lengthOfMonth();
@@ -205,11 +203,11 @@ public class DLT {
             }
 
         }
-        final FileOutputStream out = new FileOutputStream(
-                new File(fullPath));
+        final FileOutputStream out = new FileOutputStream(new File(fullPath));
         this.workbook.write(out);
         out.close();
     }
+    
 
     public String getMonth(final String s) {
         final byte mon = Byte.parseByte(s);
@@ -242,6 +240,7 @@ public class DLT {
                 return null;
         }
     }
+    
 
     public static int getWorkingDaysBetweenTwoDates(final String startDate, final String endDate)
             throws ParseException {
@@ -274,7 +273,8 @@ public class DLT {
         } // excluding end date
 
         return weekEnds;
-    }   
+    }
+    
     
     public List<DltObject> showTable(String employeeID){			//call to get quarterly leave report
     	try {    		
@@ -292,6 +292,7 @@ public class DLT {
     		return null;
     	}    	
     }     
+    
 
     private List<List<String>> returnList(String employeeID) throws IOException {
     	try {

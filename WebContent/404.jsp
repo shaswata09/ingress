@@ -35,6 +35,7 @@
             <div class="error mx-auto" data-text="error">404</div>
             <p class="lead text-gray-800 mb-5">Page Not Found</p>
             <p class="text-gray-500 mb-0">Congratulation! It looks like you found a glitch in the matrix...</p>
+            <p class="text-gray-500 mb-0">Please let us know :) So that we can fix it...</p>
             <a href="SwitchPages?pageName=dashboard">&larr; Back to Dashboard</a>
           </div>
 

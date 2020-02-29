@@ -13,6 +13,10 @@ public class LeaveServiceHelper {
 	public static int[] getLeaveTypeCount(List<DltObject> leaveList) {
     	int plannedLeaveCount = 0;
     	int unplannedLeaveCount = 0;
+    	if(null == leaveList) {
+    		int[] leaveTypeCount = {plannedLeaveCount, unplannedLeaveCount};
+    		return leaveTypeCount;    	
+    	}    		
     	for(DltObject object : leaveList) {
     		if(object.getTypeOfLeave().equalsIgnoreCase("planned")) {
     			plannedLeaveCount += object.getNumberOfDays();
@@ -25,6 +29,7 @@ public class LeaveServiceHelper {
 		return leaveTypeCount;    	
     }
 	
+	
 	public static int[] getLeaveTypeRatioPercentage(int[] leaveTypeCount) {
 		int plannedLeavePercentage = 0;
 		int unplannedLeaveTypePercentage = 0;
@@ -34,6 +39,7 @@ public class LeaveServiceHelper {
 		int[] leaveTypeRatioPercentage = {plannedLeavePercentage, unplannedLeaveTypePercentage};
 		return leaveTypeRatioPercentage;
 	}
+	
 	
 	private static boolean checkIfLeaveLiesBetween(String startDate, String endDate, String checkStartDate, String checkEndDate) {
 		try {
@@ -58,23 +64,26 @@ public class LeaveServiceHelper {
 		
 	}
 	
+	
 	public static boolean checkLeaveConflict(String employeeID, String typeOfLeave, String leaveStartDate, String leaveEndDate) {
     	List<DltObject> employeeapprovedLeaves = null;
-    	if(typeOfLeave.equalsIgnoreCase("unplanned")) {
-    		employeeapprovedLeaves = new DLT(QuarterServiceHelper.findQuarterByDate(leaveStartDate)).showTable(employeeID);
-    	}
-    	else if(typeOfLeave.equalsIgnoreCase("planned")) {
-    		employeeapprovedLeaves = new DLT(QuarterServiceHelper.findQuarterByDate(leaveStartDate)).showTable(employeeID);
-    		employeeapprovedLeaves.addAll(new TempTable().showTable(employeeID));
+    	employeeapprovedLeaves = new DLT(QuarterServiceHelper.findQuarterByDate(leaveStartDate)).showTable(employeeID);
+    	if(typeOfLeave.equalsIgnoreCase("planned")) {
+    		List<DltObject> pendingLeavesList = new TempTable().showTable(employeeID);
+    		if(null != pendingLeavesList)
+    			employeeapprovedLeaves.addAll(pendingLeavesList);
     	}
     	
-    	
+    	if(null == employeeapprovedLeaves) {
+    		return false;
+    	}
     	for(DltObject approvedLeave : employeeapprovedLeaves) {
     		if(checkIfLeaveLiesBetween(approvedLeave.getStartDate(), approvedLeave.getEndDate(), leaveStartDate, leaveEndDate))
     			return true;
     	}
     	return false;
     }
+	
 	
 	public static List<DltObject> findYearlyLeaveList(String year, String employeeID){
 		List<String> yearlyQuartersList = QuarterServiceHelper.findQuartersByYear(year);
@@ -85,6 +94,7 @@ public class LeaveServiceHelper {
 		}
 		return yearlyLeaveList;
 	}
+	
 	
 	public static int[] findMonthlyLeaveCount(List<DltObject> yearlyLeaveList) {
 		int[] monthlyLeaveCount = new int [12];
@@ -117,12 +127,8 @@ public class LeaveServiceHelper {
 		return monthlyLeaveCount;
 	}
 	
+	
 	public static int[] findYearlyLeaveCount(String year, String employeeID) {
 		return findMonthlyLeaveCount(findYearlyLeaveList(year, employeeID));
-	}
-	
-	public static void main(String args[]) {
-		for(int i : findYearlyLeaveCount("2020", null))
-			System.out.println(i);
 	}
 }
