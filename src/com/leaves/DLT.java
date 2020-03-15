@@ -2,7 +2,6 @@ package com.leaves;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,19 +12,19 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.employee.*;
-import com.PMOProperties.*;
+import com.employee.EmpLookUp;
+import com.PMOProperties.ExcelFileDetails;
+import com.PMOProperties.ApplicationVariableProperties;
 
 public class DLT {    
 	final String filePath = ExcelFileDetails.LEAVES_FOLDER_PATH;
 	final String fileName = ExcelFileDetails.DIGITAL_LEAVE_TRACKER;
+	String quarterName;
     String fullPath = null;
     FileInputStream file;
     XSSFWorkbook workbook;
@@ -33,6 +32,7 @@ public class DLT {
     
     public DLT(String quarterName) {
         try {      
+        	this.quarterName = quarterName;
         	this.fullPath = this.filePath + quarterName + "\\" + this.fileName;
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);            
@@ -45,7 +45,8 @@ public class DLT {
     public boolean addLeaveIntoTables(final int empId, final String typeOfLeave, final String start, final String end)
             throws IOException, ParseException {
     	
-    	if(LeaveServiceHelper.checkLeaveConflict(String.valueOf(empId), typeOfLeave, start, end)) {
+    	if(LeaveServiceHelper.checkLeaveConflict(String.valueOf(empId), typeOfLeave, start, end, 
+    			ApplicationVariableProperties.APPLY)) {
     		return false;
     	}
     	else {
@@ -61,7 +62,7 @@ public class DLT {
     	            final long noOfDays = this.dateDiff(temp.get(0), temp.get(1))
     	                    - getWorkingDaysBetweenTwoDates(temp.get(0), temp.get(1));
 
-    	            if(typeOfLeave.equalsIgnoreCase("unplanned")) {
+    	            if(typeOfLeave.equalsIgnoreCase(ApplicationVariableProperties.UNPLANNED)) {
     	                finalList.add(empDetails.get(1));
     	                finalList.add(empDetails.get(0));
     	                finalList.add(empDetails.get(2));
@@ -73,8 +74,8 @@ public class DLT {
     	                finalList.add(empDetails.get(3));
     	                finalList.add(empDetails.get(5));
     	                finalList.add("approved");
-    	                addToTable(finalList);
-
+    	                LeaveServiceImpl.insertLeaveIntoTable(finalList, ExcelFileDetails.LEAVES_FOLDER_PATH + quarterName + "\\", 
+    	                		ExcelFileDetails.DIGITAL_LEAVE_TRACKER);
     	            } else if(typeOfLeave.equalsIgnoreCase("planned")) {    	                
     	                finalList.add(empDetails.get(1));
     	                finalList.add(empDetails.get(0));
@@ -83,7 +84,7 @@ public class DLT {
     	                finalList.add(temp.get(1));
     	                finalList.add(getMonth(month));
     	                finalList.add(Long.toString(noOfDays));
-    	                finalList.add("planned");
+    	                finalList.add(ApplicationVariableProperties.PLANNED);
     	                finalList.add(empDetails.get(3));
     	                finalList.add(empDetails.get(5));
     	                finalList.add("pending");
@@ -177,35 +178,6 @@ public class DLT {
         final YearMonth yearMonthObject = YearMonth.of(year, month);
         final int daysInMonth = yearMonthObject.lengthOfMonth();
         return daysInMonth;
-    }
-
-
-    public void addToTable(final List<String> finalList) throws IOException {
- 
-        final CreationHelper createHelper = this.workbook.getCreationHelper();
-        final CellStyle dateCellStyle = this.workbook.createCellStyle();
-        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
-
-        int lastRowNumber = this.sheet.getLastRowNum();
-
-        final Row row = this.sheet.createRow(++lastRowNumber);
-        for(int i = 0; i < finalList.size(); i++) {
-            final Cell cell = row.createCell(i);
-            if(i == 3 || i == 4) {
-                cell.setCellValue(finalList.get(i));
-                cell.setCellStyle(dateCellStyle);
-
-            } else if(i == 6 || i == 0) {
-                cell.setCellValue(Double.parseDouble(finalList.get(i)));
-
-            } else {
-                cell.setCellValue(finalList.get(i));
-            }
-
-        }
-        final FileOutputStream out = new FileOutputStream(new File(fullPath));
-        this.workbook.write(out);
-        out.close();
     }
     
 
@@ -301,7 +273,7 @@ public class DLT {
             this.sheet = this.workbook.getSheetAt(0);
             List<List<String>> finalList = new ArrayList<List<String>>();
             
-        	for(int i = 2; i <= this.sheet.getLastRowNum(); i++) {
+        	for(int i = 1; i <= this.sheet.getLastRowNum(); i++) {
                 final List<String> al = new ArrayList<String>();
                 final Row row = this.sheet.getRow(i);
                 if(null == row) {

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.features.QuarterServiceHelper;
+import com.PMOProperties.ApplicationVariableProperties;
 
 public class LeaveServiceHelper {
 	
@@ -65,10 +66,12 @@ public class LeaveServiceHelper {
 	}
 	
 	
-	public static boolean checkLeaveConflict(String employeeID, String typeOfLeave, String leaveStartDate, String leaveEndDate) {
+	public static boolean checkLeaveConflict(String employeeID, String typeOfLeave, 
+			String leaveStartDate, String leaveEndDate, String leaveCheckingStatus) {
     	List<DltObject> employeeapprovedLeaves = null;
     	employeeapprovedLeaves = new DLT(QuarterServiceHelper.findQuarterByDate(leaveStartDate)).showTable(employeeID);
-    	if(typeOfLeave.equalsIgnoreCase("planned")) {
+    	if(typeOfLeave.equalsIgnoreCase(ApplicationVariableProperties.PLANNED) && 
+    			leaveCheckingStatus.equalsIgnoreCase(ApplicationVariableProperties.APPLY)) {
     		List<DltObject> pendingLeavesList = new TempTable().showTable(employeeID);
     		if(null != pendingLeavesList)
     			employeeapprovedLeaves.addAll(pendingLeavesList);

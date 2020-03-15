@@ -20,13 +20,15 @@ public class DecideLeaveServlet extends HttpServlet {
 		try {
 		String leaveStatus = (null != request.getParameter("leaveStatusApprove")) ? request.getParameter("leaveStatusApprove"):request.getParameter("leaveStatusDecline");			
 		String[] leaveStatusDetails = leaveStatus.split(",");
-		boolean leaveApplyFlag = false;
+		Boolean leaveApplyFlag = false;
 		
 		leaveApplyFlag = new TempTable().decision(Integer.parseInt(leaveStatusDetails[0]), 
 				leaveStatusDetails[1], leaveStatusDetails[2], Boolean.parseBoolean(leaveStatusDetails[3]));
 		
-		if(leaveApplyFlag)
-			request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_APPROVED);
+		if(null == leaveApplyFlag)
+			request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_REJECTED);
+		else if(true == leaveApplyFlag)
+			request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_APPROVED);		
 		else {
 			request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_CONFLICT);
 			request.setAttribute("userActionMessageSecondary", UserActionMessages.SAME_DATE_LEAVE_PRESENT);

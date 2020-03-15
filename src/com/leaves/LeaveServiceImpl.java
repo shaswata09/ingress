@@ -38,7 +38,7 @@ public class LeaveServiceImpl {
 	        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd"));
 
 	        final Row row = sheet.createRow(sheet.getLastRowNum()+1);
-	        
+	        System.out.println(finalList.get(0));
 	        row.createCell(0).setCellValue(Integer.parseInt(finalList.get(0)));
 	        row.createCell(1).setCellValue(finalList.get(1));
 	        row.createCell(2).setCellValue(finalList.get(2));

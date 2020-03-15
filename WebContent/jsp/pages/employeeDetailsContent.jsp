@@ -34,7 +34,7 @@
             <table class="table table-bordered display" id="dataTable">
               <thead>
                 <tr role="row">   
-                  <th>Sl.</th>            
+                  <th></th>            
                   <th>Name</th>
                   <th>ID</th>
                   <th>Email</th>
@@ -48,7 +48,7 @@
               </thead>
               <tfoot>
                 <tr>
-                  <th>Sl.</th>
+                  <th></th>
                   <th>Name</th>
                   <th>ID</th>
                   <th>Email</th>

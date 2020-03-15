@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
- 
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -20,7 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.PMOProperties.ExcelFileDetails;
 import com.features.QuarterServiceHelper;
-
+import com.PMOProperties.ApplicationVariableProperties;
  
 
 public class TempTable {
@@ -31,8 +29,7 @@ public class TempTable {
     CreationHelper createHelper;
     CellStyle dateCellStyle;
     
-    public List<String> getDetails(int empId,String startDate,String endDate)
-    {
+    public List<String> getDetails(int empId,String startDate,String endDate) {
     	List<String> list= new ArrayList<String>();
     	try {
             this.file = new FileInputStream(new File(this.fullPath));
@@ -42,7 +39,6 @@ public class TempTable {
         	exception.printStackTrace();
         }
 		
-        
         final Iterator<Row> rowIterator = this.sheet.iterator();
         int countRow = 0;
         while(rowIterator.hasNext()) {
@@ -55,30 +51,26 @@ public class TempTable {
                 continue;
             }
         
-            if(row.getCell(0).getNumericCellValue()==empId && row.getCell(3).getStringCellValue().equals(startDate)&&row.getCell(4).getStringCellValue().equals(endDate))
-            {
+            if(row.getCell(0).getNumericCellValue()==empId && row.getCell(3).getStringCellValue().equals(startDate)
+            		&& row.getCell(4).getStringCellValue().equals(endDate)) {
             	final Iterator<Cell> cellIterator=row.cellIterator();
-            	while(cellIterator.hasNext())
-            	{
+            	while(cellIterator.hasNext()) {
             		Cell cell= cellIterator.next();
             		CellType type=cell.getCellType();
-            		if(type==CellType.STRING)
-            		{
+            		if(type==CellType.STRING) {
             			String s=cell.getStringCellValue();
             			list.add(s);
             		}
-            		else if(type==CellType.NUMERIC)
-            		{
+            		else if(type==CellType.NUMERIC)	{
             			String s=Double.toString(cell.getNumericCellValue());
             			list.add(s);
             		}
             	}
-            }
-            
+            }            
         }
-        return list;
-    	
+        return list;    	
     }
+    
     
     public void deleteRow(final int empId, final String startDate, final String endDate) {
         final String fullPath = this.fullPath;
@@ -86,27 +78,16 @@ public class TempTable {
             final FileInputStream file = new FileInputStream(new File(fullPath));
             final XSSFWorkbook workbook = new XSSFWorkbook(file);
             final XSSFSheet sheet = workbook.getSheetAt(0);
-            // this.printSheet(sheet);
+           
             final int number = sheet.getLastRowNum();
-
-            /*
-             * block: { final Row temp = sheet.getRow(392); final Cell temp2 = temp.getCell(2);
-             * System.out.println(temp2.getStringCellValue()); }
-             */
-   
-            for(int i = 1; i <= number; i++) {
-                // System.out.println("Now in i=== " + i);
+            for(int i = 1; i <= number; i++) {               
                 final Row row = sheet.getRow(i);
-                if(null == row) {
-                    // System.out.println("row is null and the number is: " + i);
+                if(null == row) {                    
                     continue;
                 }
                 final Cell temp0 = row.getCell(0);
                 final Cell temp3 = row.getCell(3);
                 final Cell temp4 = row.getCell(4);
-                if(null == temp0 || null == temp3 || null == temp4) {
-                    // System.out.println("temp is null: " + i);
-                }
                 final CellType type0 = temp0.getCellType();
                 final CellType type3 = temp3.getCellType();
                 final CellType type4 = temp4.getCellType();
@@ -134,9 +115,6 @@ public class TempTable {
                 }
 
                 if(empId == tempEmpId && startDate.equals(tempStartDate) && endDate.equals(tempEndDate)) {
-                    // sheet.removeRow(row);
-                    // final int rowNum = row.getRowNum();
-
                     if(i >= 0 && i <= number) {
                         sheet.removeRow(row);
                         // sheet.shiftRows(i + 1, temp2++, -1);
@@ -157,37 +135,29 @@ public class TempTable {
         }
     }
     
-    public boolean decision(int empId, String startDate, String endDate, boolean approval)
-	{
+    
+    public Boolean decision(int empId, String startDate, String endDate, boolean approval) {
     	List<String> list=getDetails(empId,startDate,endDate);
-		if(approval)
-		{
-			list.set(10,"approved");
-			try {
-				if(!LeaveServiceHelper.checkLeaveConflict(String.valueOf(empId), "planned", startDate, endDate)) {
-					new DLT(QuarterServiceHelper.findQuarterByDate(startDate)).addToTable(list);
-					this.deleteRow(empId, startDate, endDate);
-					return true;
-				}
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();				
-			}
-		}
-		else
-		{
-			list.set(10, "rejected");
-			try {
-				new RejectedListTable().addToTable(list);
+		if(approval) {
+			list.set(10,ApplicationVariableProperties.APPROVED);			
+			if(!LeaveServiceHelper.checkLeaveConflict(String.valueOf(empId), ApplicationVariableProperties.PLANNED, 
+					startDate, endDate, ApplicationVariableProperties.ADMIN_APPROVAL)) {
+				final String quarterName = QuarterServiceHelper.findQuarterByDate(startDate);
+				 LeaveServiceImpl.insertLeaveIntoTable(list, ExcelFileDetails.LEAVES_FOLDER_PATH + quarterName + "\\", 
+                		ExcelFileDetails.DIGITAL_LEAVE_TRACKER);					
 				this.deleteRow(empId, startDate, endDate);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				return true;
+			}		
+		} else {
+			list.set(10, ApplicationVariableProperties.REJECTED);			
+			LeaveServiceImpl.insertLeaveIntoTable(list, ExcelFileDetails.LEAVES_FOLDER_PATH, 
+            		ExcelFileDetails.REJECTED_LIST);				
+			this.deleteRow(empId, startDate, endDate);
+			return null;
 		}
 		return false;
 	}
+    
     
     public List<List<String>> returnList(String employeeID) throws IOException {
         this.file = new FileInputStream(new File(this.fullPath));
@@ -239,6 +209,7 @@ public class TempTable {
         return finalList;// returns null if finds nothing-- so have to handle it
     } 
 
+    
     public List<DltObject> showTable(String employeeID){
     	try {
 	        final DltObject obj = new DltObject();
