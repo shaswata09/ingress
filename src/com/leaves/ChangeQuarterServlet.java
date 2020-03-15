@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.PMOProperties.UserActionMessages;
-import com.features.GenerateQuarterList;
+import com.employee.Employee;
+import com.features.QuarterServiceHelper;
 
 @WebServlet("/ChangeQuarterServlet")
 public class ChangeQuarterServlet extends HttpServlet {
@@ -21,12 +22,19 @@ public class ChangeQuarterServlet extends HttpServlet {
 		try {
 			String quarterInfo = request.getParameter("selectQuarter");
 			HttpSession session = request.getSession(false);
-			if(GenerateQuarterList.isQuarterDirectoryPresent(quarterInfo)) {	//query data for that quarter
+			if(QuarterServiceHelper.isQuarterDirectoryPresent(quarterInfo)) {	//query data for that quarter
 				request.removeAttribute("quarterlyLeaveList");
 				request.removeAttribute("currentQuarter");
-				request.setAttribute("quarterlyLeaveList",new DLT().showTable(quarterInfo));				
+				
+				if(session.getAttribute("pageName").toString().equalsIgnoreCase("selfLeaveStatus"))
+					request.setAttribute("quarterlyLeaveList",new DLT(quarterInfo).
+							showTable(((Employee)session.getAttribute("user")).getEmployeeId()));
+				else if(session.getAttribute("pageName").toString().equalsIgnoreCase("quarterlyLeaveReport"))
+					request.setAttribute("quarterlyLeaveList",new DLT(quarterInfo).showTable(null));
+				
 				request.setAttribute("currentQuarter", quarterInfo);
-				request.setAttribute("filteredQuarterList", GenerateQuarterList.filteredQuarterList());
+				request.setAttribute("filteredQuarterList", QuarterServiceHelper.filteredQuarterList());
+				
 				request.setAttribute("changedQuarterFlag", true);
 				request.setAttribute("userActionMessagePrimary", UserActionMessages.QUARTER_CHANGED);
 				request.setAttribute("userActionMessageSecondary", UserActionMessages.TO+" "+ quarterInfo);

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import com.PMOProperties.*;
 import com.employee.Employee;
+import com.features.QuarterServiceHelper;
 
 @WebServlet("/addLeave")
 public class AddLeaveServlet extends HttpServlet {
@@ -32,7 +33,8 @@ public class AddLeaveServlet extends HttpServlet {
 		String endDateString= request.getParameter("endDate").toString();
 		
 		SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
-		Date startDate = null, endDate = null;	
+		Date startDate = null;
+		Date endDate = null;	
 		try {
 			startDate = formatter.parse(startDateString);
 			endDate = formatter.parse(endDateString);
@@ -41,18 +43,49 @@ public class AddLeaveServlet extends HttpServlet {
 		}
 		
 		if(startDate.compareTo(endDate)<=0) {
-			DLT dlt = new DLT(); 
+			boolean leaveApplyFlag = false;
 			try { 
-				dlt.addLeaveIntoTables(userID, leaveType, startDateString, endDateString); 
+				if(QuarterServiceHelper.findQuarterByDate(startDateString).equals(QuarterServiceHelper.findQuarterByDate(endDateString))) {					
+					leaveApplyFlag =new DLT(QuarterServiceHelper.findQuarterByDate(startDateString)).addLeaveIntoTables(userID, leaveType, 
+							startDateString, endDateString); 
+				}
+				else {
+					String tempQuarter = null;				
+					leaveApplyFlag = new DLT(QuarterServiceHelper.findQuarterByDate(startDateString)).addLeaveIntoTables(userID, leaveType,
+							startDateString, QuarterServiceHelper.findLastDateOfQuarter(QuarterServiceHelper.findQuarterByDate(startDateString)));
+					
+					tempQuarter = QuarterServiceHelper.findNextQuarter(QuarterServiceHelper.findQuarterByDate(startDateString));
+					for(int i=1; i<(QuarterServiceHelper.compareQuarter(QuarterServiceHelper.findQuarterByDate(endDateString), 
+							QuarterServiceHelper.findQuarterByDate(startDateString))); i++) {						
+						leaveApplyFlag = new DLT(QuarterServiceHelper.findQuarterByDate(startDateString)).addLeaveIntoTables(userID, leaveType,
+								QuarterServiceHelper.findFirstDateOfQuarter(tempQuarter), QuarterServiceHelper.findLastDateOfQuarter(tempQuarter));				
+						tempQuarter = new String(QuarterServiceHelper.findNextQuarter(tempQuarter));
+					}
+					
+					leaveApplyFlag = new DLT(QuarterServiceHelper.findQuarterByDate(startDateString)).addLeaveIntoTables(userID, leaveType, 
+							QuarterServiceHelper.findFirstDateOfQuarter(QuarterServiceHelper.findQuarterByDate(endDateString)), endDateString);
+				}		
+				
 				session.setAttribute("pageName", "addLeave");
 				if(((Employee)session.getAttribute("user")).getEmployeeAccessRight().equals("1")) {
-					request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_APPLIED);
+					if(leaveApplyFlag)
+						request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_APPLIED);
+					else {
+						request.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_CONFLICT);
+						request.setAttribute("userActionMessageSecondary", UserActionMessages.SAME_DATE_LEAVE_PRESENT);
+					}
 				}
 				else {
 					session.setAttribute("userActionMessageFlag", "true");
-					session.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_APPLIED);
-					if(((Employee)session.getAttribute("user")).getEmployeeAccessRight().equals("0"))
-						session.setAttribute("userActionMessageSecondary", UserActionMessages.CONTACT_ADMIN_FOR_APPROVAL);
+					if(leaveApplyFlag) {
+						session.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_APPLIED);
+						if(leaveType.equalsIgnoreCase("planned"))
+							session.setAttribute("userActionMessageSecondary", UserActionMessages.CONTACT_ADMIN_FOR_APPROVAL);
+					}
+					else {
+						session.setAttribute("userActionMessagePrimary", UserActionMessages.LEAVE_CONFLICT);
+						session.setAttribute("userActionMessageSecondary", UserActionMessages.SAME_DATE_LEAVE_PRESENT);
+					}
 				}				
 			} catch(ParseException e) {
 				System.out.println("ERROR Occured while adding leave.");

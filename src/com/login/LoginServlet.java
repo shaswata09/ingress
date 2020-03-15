@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
 			Integer.parseInt(userId);
 			Validate validate = new Validate();		
 			Employee employee = validate.checkCredential(userId, password);
-			if(employee == null) {
+			if(null == employee) {
 				new Exception("Null User");
 			}
 			else if(employee.getEmployeeAccessRight().equals("1")) {

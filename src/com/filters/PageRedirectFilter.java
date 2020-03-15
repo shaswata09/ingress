@@ -47,7 +47,7 @@ public class PageRedirectFilter implements Filter {
 			//send to login
 		}
 		else {//user not null
-			if(session.getAttribute("pageName")==null) {
+			if(null == session.getAttribute("pageName")) {
 				//send to dash with pagename dash
 			}
 			else {

@@ -128,7 +128,6 @@ public class DltObject {
             } else if(i == 10) {
                 obj.setComment(list.get(i));
             }
-
         }
         return obj;
     }

@@ -12,8 +12,8 @@
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Leave Entry(Quarterly)</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">Count</div>
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Quarterly Leave</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${quarterlyLeaveCount[0]+quarterlyLeaveCount[1]}</div>
               </div>
               <div class="col-auto">
                 <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -32,15 +32,15 @@
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Leave Summary(Personal)</div>
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Personal Leave</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">7:3</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">${selfLeaveCount[0]}:${selfLeaveCount[1]}</div>
                   </div>
                   <div class="col">
                     <div class="progress progress-sm mr-2">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                      <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: ${selfLeaveTypeRatio[0]}%" aria-valuenow="${selfLeaveTypeRatio[0]}" aria-valuemin="0" aria-valuemax="100"></div>
+                      <div class="progress-bar bg-warning" role="progressbar" style="width: ${selfLeaveTypeRatio[1]}%" aria-valuenow="${selfLeaveTypeRatio[1]}" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                   </div>
                 </div>
@@ -64,13 +64,8 @@
                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pending Leaves</div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                  </div>
-                  <div class="col">
-                    <div class="progress progress-sm mr-2">
-                      <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${pendingLeaveNumbers}</div>
+                  </div>                  
                 </div>
               </div>
               <div class="col-auto">
@@ -90,7 +85,7 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Edit Employee</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">Count: 18</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">Count: ${totalEmployeeCount}</div>
               </div>
               <div class="col-auto">
               	<i class="fas fa-portrait fa-2x text-gray-300"></i>

@@ -17,7 +17,7 @@ public class ChangePasswordServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		try {
-			if(session.getAttribute("user") == null)
+			if(null == session.getAttribute("user"))
 				throw new Exception("Invalid user");
 			else 
 				session.setAttribute("pageName","dashboard");

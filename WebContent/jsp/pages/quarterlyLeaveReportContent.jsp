@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
 <!-- Begin Page Content -->
@@ -10,7 +10,7 @@
         <div class="card-header py-3">
           <div class="row">
             <div class="col-lg-4 col-md-5 col-sm-6">
-          	  <h6 class="m-0 font-weight-bold text-primary">Quarterly Leave Report</h6>
+          	  <h6 class="m-2 font-weight-bold text-primary">Quarterly Leave Report</h6>
             </div>
             <div class="col-lg-4 col-md-3 col-sm-0"></div>
           	<div class="col-lg-4 col-md-4 col-sm-0 form-group">
@@ -21,10 +21,10 @@
 						  <c:forEach items="${filteredQuarterList}" var="quarter">
 							  <c:choose>
 							  	<c:when test="${ quarter.equals(currentQuarter)}">
-							  		<option value="${quarter}" selected><c:out value="${quarter}"/></option>
+							  		<option value="${quarter}" selected>${quarter}</option>
 							  	</c:when>
 							  	<c:otherwise>
-							  		<option value="${quarter}"><c:out value="${quarter}"/></option> 
+							  		<option value="${quarter}">${quarter}</option> 
 							  	</c:otherwise>
 							  </c:choose>					  	
 						  </c:forEach>				  					  
@@ -57,7 +57,7 @@
               <tfoot>
                 <tr>
                   <th>Name(ID)</th>
-                  <th>Start Date -- End Date</th>
+                  <th>(yyyy-MM-dd) -- (yyyy-MM-dd)</th>
                   <th>Days</th>
                   <th>Month</th>
                   <th>Type</th>

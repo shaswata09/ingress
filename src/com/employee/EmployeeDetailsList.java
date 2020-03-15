@@ -17,7 +17,7 @@ import com.PMOProperties.ExcelFileDetails;
 public class EmployeeDetailsList {
 	
 	final String fileName = ExcelFileDetails.EMPLOYEE_LOOKUP_FILE_NAME;
-    final String fullPath = ExcelFileDetails.PROJECT_FOLDER_PATH + this.fileName;
+    final String fullPath = ExcelFileDetails.EMPLOYEE_FOLDER_PATH + this.fileName;
     FileInputStream file;
     XSSFWorkbook workbook;
 	XSSFSheet sheet;
@@ -28,8 +28,8 @@ public class EmployeeDetailsList {
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);            
             this.sheet = this.workbook.getSheetAt(0);
-        } catch(final Exception e) {
-            System.out.println(e);
+        } catch(final Exception exception) {
+        	exception.printStackTrace();
         }
 		
         final List<Employee> empList = new ArrayList<Employee>();
@@ -41,7 +41,7 @@ public class EmployeeDetailsList {
                 countRow++;
                 continue;
             }
-            if(row == null) {
+            if(null == row) {
                 continue;
             }
         
@@ -52,7 +52,7 @@ public class EmployeeDetailsList {
 
             while(cellIterator.hasNext()) {
                 final Cell cell = cellIterator.next();
-                if(cell == null) {
+                if(null == cell) {
                     count++;
                     continue;
                 }
