@@ -13,8 +13,4 @@ public final class UserActionMessages {
 	public static final String TRY_AGAIN = "Please try again :)";
 	public static final String QUARTER_CHANGED = "QUARTER INFO CHANGED :)";
 	public static final String TO = "to";
-	public static final String LEAVE_CONFLICT = "LEAVE CONFLICT OCCURRED!";
-	public static final String SAME_DATE_LEAVE_PRESENT = "Leave covering these days are already present.";
-	public static final String LEAVE_APPROVED = "LEAVE APPROVED :)";
-	public static final String LEAVE_REJECTED = "LEAVE REJECTED :(";
 }

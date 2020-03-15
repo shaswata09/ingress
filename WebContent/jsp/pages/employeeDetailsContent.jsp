@@ -34,7 +34,7 @@
             <table class="table table-bordered display" id="dataTable">
               <thead>
                 <tr role="row">   
-                  <th></th>            
+                  <th>Sl.</th>            
                   <th>Name</th>
                   <th>ID</th>
                   <th>Email</th>
@@ -48,7 +48,7 @@
               </thead>
               <tfoot>
                 <tr>
-                  <th></th>
+                  <th>Sl.</th>
                   <th>Name</th>
                   <th>ID</th>
                   <th>Email</th>
@@ -65,15 +65,15 @@
                 <c:forEach items="${employeeList}" var="employee">
                 	<tr>
 	                  <td><input type="radio" name="employeeEditSelect" value='${employee.getEmployeeId()}'></td>
-	                  <td>${employee.getEmployeeName()}</td>
-	                  <td>${employee.getEmployeeId()}</td>
-	                  <td>${employee.getEmployeeMailID()}</td>
-	                  <td>${employee.getEmployeeTeam()}</td>
-	                  <td>${employee.getEmployeeLocation()}</td>
-	                  <td>${employee.getEmployeeRole()}</td>
-	                  <td>${employee.getEmployeeSOW()}</td>
-	                  <td>${employee.getEmployeeMobile()}</td>
-	                  <td>${employee.getEmployeeEmergencyContact()}</td>
+	                  <td><c:out value='${employee.getEmployeeName()}'/></td>
+	                  <td><c:out value='${employee.getEmployeeId()}'/></td>
+	                  <td><c:out value='${employee.getEmployeeMailID()}'/></td>
+	                  <td><c:out value='${employee.getEmployeeTeam()}'/></td>
+	                  <td><c:out value='${employee.getEmployeeLocation()}'/></td>
+	                  <td><c:out value='${employee.getEmployeeRole()}'/></td>
+	                  <td><c:out value='${employee.getEmployeeSOW()}'/></td>
+	                  <td><c:out value='${employee.getEmployeeMobile()}'/></td>
+	                  <td><c:out value='${employee.getEmployeeEmergencyContact()}'/></td>
 	                </tr>
                 </c:forEach>
               

@@ -28,7 +28,7 @@
               <tfoot>
                 <tr>
                   <th>Name(ID)</th>
-                  <th>(yyyy-MM-dd) -- (yyyy-MM-dd)</th>
+                  <th>Start Date -- End Date</th>
                   <th>Days</th>
                   <th>Month</th>
                   <th>Team</th>                  

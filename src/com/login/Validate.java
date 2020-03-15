@@ -18,7 +18,7 @@ import com.employee.Employee;
 import com.PMOProperties.ExcelFileDetails;;
 
 public class Validate {
-	final String fullPath = ExcelFileDetails.EMPLOYEE_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
+	final String fullPath = ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
 	XSSFWorkbook workbook;
     XSSFSheet sheet;
     FileInputStream file;
@@ -38,20 +38,23 @@ public class Validate {
 
 
         while(rowIterator.hasNext()) {
+        	System.out.println("step 1---> in while");
             final Row row = rowIterator.next();
             final Cell cellId = row.getCell(0);
             final CellType type = cellId.getCellType();
 
 
             if(type == CellType.STRING) {
+            	System.out.println("step 2---> celltype is string");
                 final String cellValue = cellId.getStringCellValue();
                 if(cellValue.equals(id)) {
                     final Cell cellPassword = row.getCell(1);
                     if(cellPassword.getStringCellValue().equals(password)) {
                         if(row.getCell(2).getStringCellValue().equals("1")) {
+                        	System.out.println("step 2.1---> password matched and is admin");
                             al.add("1");
                             final List<String> al2 = elu.searchId(id);
-                            if(null == al2) {
+                            if(al2 == null) {
                                 System.out.println("Found in login table but not present in ELT");
                                 return null;
                             }
@@ -59,9 +62,10 @@ public class Validate {
                             return new Employee(al);
                         } 
                         else {
+                        	System.out.println("step 2.2---> password matched and is user");
                             al.add("0");
                             final List<String> al2 = elu.searchId(id);
-                            if(null == al2) {
+                            if(al2 == null) {
                                 System.out.println("Found in login table but not present in ELT");
                                 return null;
                             }
@@ -72,15 +76,18 @@ public class Validate {
                 }
             }
             else if(type==CellType.NUMERIC) {
+            	System.out.println("step 3---> celltype is numeric");
             	final int cellValue=(int) cellId.getNumericCellValue();
             	if(cellValue == Integer.parseInt(id))
             	{
+            		System.out.println("step 3.1---> user id found");
             		final Cell cellPassword = row.getCell(1);
             		if(cellPassword.toString().equals(password))  {            		
             			if(Integer.toString(((int)row.getCell(2).getNumericCellValue())).equals("1")) {
+            				System.out.println("step 3.2.1---> password matched and is admin");
                             al.add("1");
                             final List<String> al2 = elu.searchId(id);
-                            if(null == al2) {
+                            if(al2 == null) {
                                 System.out.println("Found in login table but not present in ELT");
                                 return null;
                             }
@@ -88,9 +95,10 @@ public class Validate {
                             return new Employee(al);
             			}
             			else {
+            				System.out.println("step 3.2.2---> password matched and is user");
                             al.add("0");
                             final List<String> al2 = elu.searchId(id);
-                            if(null == al2) {
+                            if(al2 == null) {
                                 System.out.println("Found in login table but not present in ELT");
                                 return null;
                             }

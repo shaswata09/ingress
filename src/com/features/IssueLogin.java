@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -15,8 +18,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.PMOProperties.ExcelFileDetails;
 
 public class IssueLogin {
-	final String fullPath =  ExcelFileDetails.EMPLOYEE_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
-	final String fullPath1 = ExcelFileDetails.EMPLOYEE_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOOKUP_FILE_NAME;
+	final String fullPath =  ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
+	final String fullPath1 = ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOOKUP_FILE_NAME;
 	FileInputStream file,file1;
     XSSFWorkbook workbook,workbook1;
     XSSFSheet sheet,empLookUpSheet;
@@ -44,7 +47,7 @@ public class IssueLogin {
             }
             // For each row, iterate through all the columns
             final Cell cell = row.getCell(1);
-           
+           // System.out.println(cell.toString());
             int empLookUpId;
             final CellType type = cell.getCellType();
             if(type == CellType.STRING) {
@@ -62,12 +65,13 @@ public class IssueLogin {
 
         for(int i = 1; i <= this.sheet.getLastRowNum(); i++) {
             final Row row = this.sheet.getRow(i);
-            if(null == row) {
+            if(row == null) {
                 continue;
             }
             final Cell cell = row.getCell(0);
             final CellType type = cell.getCellType();
-            if(null == cell) {
+            if(cell == null) {
+                System.out.println("cell is null");
                 continue;
             }
             final int cellEmpId;
@@ -85,6 +89,9 @@ public class IssueLogin {
     }
 
     public void addDefault(final int empId) throws IOException { 
+
+
+            System.out.println("im in addDefault");
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);
             this.sheet = this.workbook.getSheetAt(0);
@@ -106,9 +113,9 @@ public class IssueLogin {
         }
 
         final FileOutputStream out = new FileOutputStream(
-                new File(this.fullPath));
+                new File(ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME));
         this.workbook.write(out);
-        this.workbook.close();
+
         out.close();
     }
 

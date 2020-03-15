@@ -18,20 +18,24 @@ public class Insert {
     XSSFWorkbook workbook;
     XSSFSheet sheet;
     FileInputStream file;
-    final String fullPath = ExcelFileDetails.EMPLOYEE_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
+    final String fullPath = ExcelFileDetails.PROJECT_FOLDER_PATH + ExcelFileDetails.EMPLOYEE_LOGIN_FILE_NAME;
 
     public void insertEmployee() throws IOException {
     	
-        final Scanner scanner = new Scanner(System.in);
+        final Scanner sc = new Scanner(System.in);
         try {
+            System.out.println("im in insert");
             this.file = new FileInputStream(new File(this.fullPath));
             this.workbook = new XSSFWorkbook(this.file);
             this.sheet = this.workbook.getSheetAt(0);
         } catch(final IOException io) { // if the file is not present then it will create the file
                                         // first and call again
+            System.out.println("I am here");
             // Blank workbook
             this.workbook = new XSSFWorkbook();
-            
+
+ 
+
             // Create a blank sheet
             this.sheet = this.workbook.createSheet("Login Details");
             final FileOutputStream out = new FileOutputStream(
@@ -55,13 +59,11 @@ public class Insert {
                 System.out.println("Give access level: ");
             }
             final Cell cell = row.createCell(i);
-            cell.setCellValue(scanner.next());
+            cell.setCellValue(sc.next());
         }
         final FileOutputStream out = new FileOutputStream(
                 new File(fullPath));
-        scanner.close();
         this.workbook.write(out);
-        this.workbook.close();
         out.close();
     }
 	

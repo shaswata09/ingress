@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100">
 		<div class="alert alert-secondary alert-dismissible fade show" role="alert">
-		  <strong>${userActionMessagePrimary}</strong> ${userActionMessageSecondary}
+		  <strong><c:out value='${userActionMessagePrimary}'/></strong> <c:out value='${userActionMessageSecondary}'/>
 		  <div class="spinner-grow spinner-grow-sm text-info" role="status">
 			  <span class="sr-only">Loading...</span>
 			</div>

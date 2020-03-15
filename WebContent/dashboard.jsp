@@ -11,7 +11,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>INGRESS</title>
+  <title>KITS PMO - Dash</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -30,9 +30,6 @@
   <script>
 	  $(document).ready( function () {
 		    $('#dataTable').DataTable();
-		} );
-	  $(document).ready( function () {
-		    $('#pendingLeaveDataTable').DataTable();
 		} );
   </script>
   

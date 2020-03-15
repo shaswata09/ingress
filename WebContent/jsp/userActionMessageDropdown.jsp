@@ -10,7 +10,7 @@
   <!-- Dropdown - Messages -->
   <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
     <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-	  <strong>${userActionMessagePrimary}</strong> ${userActionMessageSecondary}
+	  <strong><c:out value='${userActionMessagePrimary}'/></strong> <c:out value='${userActionMessageSecondary}'/>	  
 	</div>
   </div>
 </li>

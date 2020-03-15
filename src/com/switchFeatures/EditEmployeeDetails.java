@@ -31,6 +31,7 @@ public class EditEmployeeDetails extends HttpServlet {
 				session.setAttribute("editDetailsEmployeeFlag", "true");			
 			}
 			else {
+				System.out.println(userId+" "+request.getParameter("employeeEditType"));
 				session.setAttribute("pageName","dashboard");				
 			}	
 			request.getRequestDispatcher("dashboard.jsp").forward(request, response);

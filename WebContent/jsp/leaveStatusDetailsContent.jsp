@@ -4,55 +4,13 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-	<div class="col-lg-11 col-md-11 col-sm-12" style="margin: 0 auto;">
-	
-	<div class="card shadow mb-4">
-      <!-- Card Header - Accordion -->
-      <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-        <h6 class="m-0 font-weight-bold text-primary">Pending Leaves</h6>
-      </a>
-      <!-- Card Content - Collapse -->
-      <div class="collapse" id="collapseCardExample" style="">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered display" id="pendingLeaveDataTable">
-              <thead>
-                <tr role="row">  
-                  <th>Start Date -- End Date</th>
-                  <th>Days</th>
-                  <th>Month</th>                
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>                  
-                  <th>yyyy-MM-dd -- yyyy-MM-dd</th>
-                  <th>Days</th>
-                  <th>Month</th>  
-                </tr>
-              </tfoot>                           
-              <tbody>
-              	<c:forEach items="${pendingSelfLeaveList}" var="pendingLeave">                           
-                <tr>	                	
-                	<td>${pendingLeave.getStartDate()} -- ${pendingLeave.getEndDate()}</td>
-                	<td>${pendingLeave.getNumberOfDays()}</td>
-                	<td>${pendingLeave.getLeaveMonth()}</td>
-                </tr>  
-                </c:forEach>	                  
-              </tbody>
-            </table>
-          </div>  
-        </div>
-      </div>
-    </div>
-	</div>
-	
-	
-    <!-- DataTables Example -->
+
+    <!-- DataTales Example -->
 	<div class="card shadow mb-4">
         <div class="card-header py-3">
           <div class="row">
             <div class="col-lg-4 col-md-5 col-sm-6">
-          	  <h6 class="m-0 font-weight-bold text-primary">Quarterly Leave Report(Approved)</h6>
+          	  <h6 class="m-0 font-weight-bold text-primary">Quarterly Leave Report</h6>
             </div>
             <div class="col-lg-4 col-md-3 col-sm-0"></div>
             <div class="col-lg-4 col-md-4 col-sm-0 form-group">
@@ -63,10 +21,10 @@
 						  <c:forEach items="${filteredQuarterList}" var="quarter">
 							  <c:choose>
 							  	<c:when test="${ quarter.equals(currentQuarter)}">
-							  		<option value="${quarter}" selected>${quarter}</option>
+							  		<option value="${quarter}" selected><c:out value="${quarter}"/></option>
 							  	</c:when>
 							  	<c:otherwise>
-							  		<option value="${quarter}">${quarter}</option> 
+							  		<option value="${quarter}"><c:out value="${quarter}"/></option> 
 							  	</c:otherwise>
 							  </c:choose>					  	
 						  </c:forEach>				  					  
@@ -89,28 +47,31 @@
                 <tr role="row">   
                   <th>Start Date</th>            
                   <th>End Date</th>
-                  <th>Days</th>                  
+                  <th>Days</th>
+                  <th>Type</th>
                   <th>Month</th>
-                  <th>Type</th>                                 
+                  <th>Status</th>                  
                 </tr>
               </thead>
               <tfoot>
                 <tr>
-                  <th>(yyyy-MM-dd)</th>            
-                  <th>(yyyy-MM-dd)</th>
-                  <th>Days</th>                  
-                  <th>Month</th> 
-                  <th>Type</th>                                 
+                  <th>Start Date</th>            
+                  <th>End Date</th>
+                  <th>Days</th>
+                  <th>Type</th>
+                  <th>Month</th>
+                  <th>Status</th>                    
                 </tr>
               </tfoot>                           
               <tbody>                
-                <c:forEach items="${quarterlyLeaveList}" var="approvedLeave">                           
+                <c:forEach items="${quarterlyLeaveList}" var="appliedLeave">                           
 	                <tr>
-	                	<td>${approvedLeave.getStartDate()}</td>
-	                	<td>${approvedLeave.getEndDate()}</td>
-	                	<td>${approvedLeave.getNumberOfDays()}</td>	                	
-	                	<td>${approvedLeave.getLeaveMonth()}</td>
-	                	<td>${approvedLeave.getTypeOfLeave()}</td>	                	
+	                	<td>${appliedLeave.getStartDate()}</td>
+	                	<td>${appliedLeave.getEndDate()}</td>
+	                	<td>${appliedLeave.getNumberOfDays()}</td>
+	                	<td>${appliedLeave.getTypeOfLeave()}</td>
+	                	<td>${appliedLeave.getLeaveMonth()}</td>
+	                	<td>${appliedLeave.getComment()}</td>
 	                </tr>  
                 </c:forEach>                  
               </tbody>

@@ -3,17 +3,13 @@ Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,Bli
 Chart.defaults.global.defaultFontColor = '#858796';
 
 // Pie Chart Example
-var pannedLeaveCount = document.getElementById("pannedLeaveCount").value;
-var unpannedLeaveCount = document.getElementById("unpannedLeaveCount").value;
-var pendingLeaveCount = document.getElementById("pendingLeaveCount").value;
-
 var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Unplanned", "Planned", "Pending"],
+    labels: ["Direct", "Referral", "Social"],
     datasets: [{
-      data: [unpannedLeaveCount, pannedLeaveCount, pendingLeaveCount],
+      data: [55, 30, 15],
       backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
       hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
